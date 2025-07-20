@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSE - Pagos Seguros en Línea</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: white;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 450px;
+            width: 100%;
+        }
+
+        /* Header con logo PSE */
+        .header {
+            background: white;
+            border-radius: 15px 15px 0 0;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            width: 45px;
+            height: 45px;
+            background: #1e4d5f;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .tagline {
+            color: #1e4d5f;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Contenido principal */
+        .main-content {
+            background: white;
+            border-radius: 0 0 15px 15px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: -1px;
+        }
+
+        /* Icono de advertencia */
+        .warning-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+
+        .warning-triangle {
+            width: 70px;
+            height: 60px;
+            border: 3px solid #1e4d5f;
+            border-bottom: none;
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            margin: 0 auto;
+            background: white;
+        }
+
+        .warning-triangle::before {
+            content: '';
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 50px;
+            background: #ffa500;
+            border-radius: 50%;
+            border: 3px solid #e69500;
+        }
+
+        .warning-triangle::after {
+            content: '!';
+            position: absolute;
+            top: -28px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .warning-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: #1e4d5f;
+            border-radius: 50%;
+        }
+
+        /* Título */
+        .title {
+            color: #1e4d5f;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            line-height: 1.3;
+        }
+
+        /* Mensaje principal */
+        .message {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .transaction-code {
+            font-weight: 600;
+            color: #1e4d5f;
+        }
+
+        /* Mensaje secundario */
+        .secondary-message {
+            color: #555;
+            font-size: 15px;
+            line-height: 1.4;
+            margin-bottom: 30px;
+        }
+
+        /* Botón principal */
+        .main-button {
+            background: linear-gradient(135deg, #ffa500 0%, #ff8c00 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            max-width: 280px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3);
+        }
+
+        .main-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 165, 0, 0.4);
+            background: linear-gradient(135deg, #ff8c00 0%, #ff7700 100%);
+        }
+
+        .main-button:active {
+            transform: translateY(0);
+        }
+
+        /* Footer de información */
+        .info-footer {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            background: #ffa500;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 5px;
+        }
+
+        .info-icon::after {
+            content: 'i';
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .info-content {
+            flex: 1;
+        }
+
+        .info-title {
+            color: #333;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-icon-small {
+            width: 16px;
+            height: 16px;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .phone-icon {
+            background: #1e4d5f;
+            border-radius: 3px;
+        }
+
+        .contact-icon {
+            background: #1e4d5f;
+            border-radius: 50%;
+        }
+
+        .info-link {
+            color: #1e4d5f;
+            text-decoration: none;
+        }
+
+        .info-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+
+            .main-content {
+                padding: 30px 20px;
+            }
+
+            .title {
+                font-size: 18px;
+            }
+
+            .message {
+                font-size: 15px;
+            }
+
+            .secondary-message {
+                font-size: 14px;
+            }
+
+            .main-button {
+                font-size: 15px;
+                padding: 12px 25px;
+            }
+
+            .info-footer {
+                padding: 15px;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .info-item {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .warning-triangle {
+                width: 60px;
+                height: 50px;
+            }
+
+            .warning-triangle::before {
+                width: 45px;
+                height: 45px;
+                top: -30px;
+            }
+
+            .warning-triangle::after {
+                font-size: 24px;
+                top: -24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <img src="img/imgps.png" style="width: 40%;" alt="">
+        </div>
+
+        <!-- Contenido Principal -->
+        <div class="main-content">
+     
+            <img src="img/Alerta1.svg" alt="">
+            <!-- Título -->
+            <h1 class="title">Pago Con PSE - Pagos Seguros en Línea</h1>
+
+            <!-- Mensaje principal -->
+            <p class="message">
+                Lamentamos comunicarle que la transacción de código único (CUS) <span class="transaction-code">1478854700</span> no se pudo realizar.
+            </p>
+
+            <!-- Mensaje secundario -->
+            <p class="secondary-message">
+                Intenta más tarde o con otro medio de pago. Si el problema persiste, por favor comunícate con el comercio para más información.
+            </p>
+
+            <!-- Botón principal -->
+            <button class="main-button" onclick="redirectToCommerce()">
+                Interntar de nuevo
+            </button>
+        </div>
+
+        <!-- Footer de información -->
+        <div class="info-footer">
+            <div class="info-icon"></div>
+            <div class="info-content">
+                <div class="info-title">Para mayor información comunícate con nosotros:</div>
+                <div class="info-item">
+                    <div class="info-icon-small phone-icon"></div>
+                    <span><strong>En Bogotá:</strong> +57 (601) 3808890 opción 5</span>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon-small contact-icon"></div>
+                    <span><strong>Contáctanos:</strong> <a href="https://www.pse.com.co/personas-centro-de-ayuda" class="info-link">https://www.pse.com.co/personas-centro-de-ayuda</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function redirectToCommerce() {
+            // Aquí puedes cambiar la URL a donde quieres que redirija
+            window.location.href = 'pago.html'; // Cambia esta URL por la que necesites
+            
+            // Alternativa para abrir en nueva pestaña:
+            // window.open('https://example.com', '_blank');
+        }
+    </script>
+</body>
+</html>

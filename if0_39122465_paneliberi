@@ -1,0 +1,23 @@
+CREATE TABLE panel (
+    id CHAR(36) PRIMARY KEY,
+    dato1 TEXT,
+    dato2 TEXT,
+    dato3 VARCHAR(255),
+    dato3_status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
+    rejected_flag BOOLEAN DEFAULT 0,
+    rejected_reason TEXT,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    redirect_flag BOOLEAN DEFAULT 0
+);
+
+CREATE TABLE admins (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+ALTER TABLE panel 
+ADD INDEX idx_redirect (redirect_flag),
+ADD INDEX idx_rejected (rejected_flag),
+ADD INDEX idx_dato3_status (dato3_status);

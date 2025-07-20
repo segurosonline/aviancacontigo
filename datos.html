@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario de Pasajeros</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --avianca-red: #E4202B;
+      --primary-green: #10b981;
+      --text-dark: #1f2937;
+      --text-light: #6b7280;
+      --border-color: #e5e7eb;
+      --background-white: #ffffff;
+      --header-height: 70px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: #f5f7fa;
+      color: var(--text-dark);
+      line-height: 1.5;
+    }
+
+    /* ------------------- */
+    /* Header Responsive   */
+    /* ------------------- */
+    .header {
+      background: var(--background-white);
+      padding: 10px 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      flex-wrap: wrap;
+      height: auto;
+      min-height: var(--header-height);
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .avianca-logo {
+      font-weight: 700;
+      font-size: 24px;
+      color: var(--avianca-red);
+      flex-shrink: 0;
+    }
+    
+    .header-flight-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-light);
+      width: 100%;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .info-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .header-flight-info .info-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .header-flight-info .edit-link {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: 500;
+      margin-left: auto;
+      font-size: 14px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .step-indicator {
+      color: var(--text-light);
+      font-size: 13px;
+      text-align: right;
+    }
+
+    .progress-container {
+      width: 80px;
+      height: 4px;
+      background: var(--border-color);
+      border-radius: 3px;
+      margin-top: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 60%;
+      height: 100%;
+      background: var(--primary-green);
+    }
+    
+    .header-total-btn {
+      background: var(--background-white);
+      border: 1px solid var(--text-light);
+      border-radius: 20px;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .header-total-btn i {
+      font-size: 14px;
+    }
+
+    /* ------------------- */
+    /* Contenido Principal */
+    /* ------------------- */
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      background-color: transparent;
+      padding: 0 16px;
+    }
+
+    .title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 16px;
+    }
+
+    .save-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .save-text {
+      color: #374151;
+      font-size: 14px;
+    }
+
+    .toggle-switch {
+      width: 44px;
+      height: 24px;
+      background-color: #d1d5db;
+      border-radius: 12px;
+      position: relative;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .toggle-switch.active {
+      background-color: #3b82f6;
+    }
+
+    .toggle-handle {
+      width: 20px;
+      height: 20px;
+      background-color: white;
+      border-radius: 50%;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.2s;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .toggle-switch.active .toggle-handle {
+      transform: translateX(20px);
+    }
+
+    .description {
+      color: #6b7280;
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    .passenger-section {
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 20px;
+      background-color: white;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .passenger-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .passenger-title::before {
+      content: "1";
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      background: var(--avianca-red);
+      color: white;
+      border-radius: 50%;
+      font-size: 14px;
+    }
+
+    .form-row,
+    .birth-date-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .form-group.small {
+      flex: 0 0 100px;
+    }
+
+    .form-group.medium {
+      flex: 0 0 140px;
+    }
+
+    .form-group.large {
+      flex: 2;
+      min-width: 100%;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #374151;
+      background-color: white;
+      transition: all 0.2s;
+    }
+
+    select:focus, input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 12px center;
+      background-repeat: no-repeat;
+      background-size: 16px;
+      padding-right: 40px;
+    }
+
+    .birth-date-label {
+      color: #374151;
+      font-size: 13px;
+      margin-bottom: 8px;
+      font-weight: 500;
+      display: block;
+    }
+
+    .frequent-traveler {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #3b82f6;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 16px;
+      padding: 8px 0;
+      transition: all 0.2s;
+    }
+
+    .frequent-traveler:hover {
+      color: #2563eb;
+    }
+
+    .plus-icon {
+      width: 20px;
+      height: 20px;
+      border: 1px solid #3b82f6;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: normal;
+    }
+    
+    /* Reservation Holder */
+    .reservation-holder {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid #e5e7eb;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .section-description {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 20px;
+    }
+    
+    .checkbox-section {
+      font-size: 14px;
+      color: #374151;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+    
+    .checkbox-section label {
+      display: block;
+      margin-bottom: 12px;
+      padding-left: 28px;
+      position: relative;
+      cursor: pointer;
+    }
+    
+    .checkbox-section input {
+      position: absolute;
+      left: 0;
+      top: 2px;
+      width: 18px;
+      height: 18px;
+    }
+    
+    .checkbox-section a {
+      color: var(--avianca-red);
+      text-decoration: underline;
+    }
+    
+    .continue-button {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+    }
+    
+    .continue-button button {
+      background: var(--avianca-red);
+      color: #fff;
+      padding: 14px 40px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.3s;
+      width: 100%;
+      max-width: 300px;
+    }
+    
+    .continue-button button:hover {
+      background: #c11a24;
+    }
+    
+    /* Media Queries */
+    @media (min-width: 768px) {
+      .header {
+        flex-wrap: nowrap;
+        padding: 10px 24px;
+      }
+      
+      .header-top {
+        width: auto;
+        gap: 30px;
+      }
+      
+      .header-flight-info {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        border-top: none;
+        margin-top: 0;
+        padding-top: 0;
+        width: auto;
+        flex: 1;
+      }
+      
+      .info-row {
+        flex-wrap: nowrap;
+        gap: 20px;
+      }
+      
+      .header-actions {
+        gap: 20px;
+      }
+      
+      .step-indicator {
+        font-size: 14px;
+      }
+      
+      .header-total-btn {
+        padding: 8px 16px;
+        font-size: 14px;
+      }
+      
+      .container {
+        padding: 24px;
+        max-width: 800px;
+      }
+      
+      .passenger-section {
+        padding: 24px;
+      }
+      
+      .form-row,
+      .birth-date-row {
+        gap: 16px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .header {
+        padding: 8px 12px;
+      }
+      
+      .avianca-logo {
+        font-size: 22px;
+      }
+      
+      .header-total-btn span {
+        display: none;
+      }
+      
+      .header-total-btn {
+        padding: 6px 8px;
+      }
+      
+      .header-total-btn i {
+        margin: 0;
+      }
+      
+      .info-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+      
+      .header-flight-info .edit-link {
+        margin-left: 0;
+        margin-top: 6px;
+      }
+      
+      .birth-date-row .form-group {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-top">
+      <img src="img/logoavianca-newbrand-rojo-1.svg" alt="">
+      <div class="header-actions">
+        <div class="step-indicator">
+          Paso 3 de 5
+          <div class="progress-container"><div class="progress-bar"></div></div>
+        </div>
+       
+      </div>
+    </div>
+    
+    
+  </header>
+  
+  <div class="container">
+    <div>
+      <h1 class="title">Pasajeros</h1>
+      <div class="save-toggle">
+        <span class="save-text">Guardar información para futuras compras</span>
+        <div class="toggle-switch active" onclick="toggleSwitch(this)">
+          <div class="toggle-handle"></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="description">
+      Ingresa el primer nombre y primer apellido (de cada pasajero) tal y como aparecen en el pasaporte o documento de identidad.
+    </p>
+
+    <div class="passenger-section">
+      <h2 class="passenger-title">Adulto 1</h2>
+
+      <div class="form-row">
+        <div class="form-group small">
+          <select>
+            <option>Género*</option>
+            <option>Masculino</option>
+            <option>Femenino</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <input type="text" placeholder="Nombre*">
+        </div>
+        <div class="form-group">
+          <input type="text" placeholder="Apellido*">
+        </div>
+      </div>
+
+      <div class="birth-date-row">
+        <div class="form-group small">
+          <label class="birth-date-label">Fecha de nacimiento*</label>
+          <select required>
+            <option value="">Día</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+          </select>
+
+        </div>
+        <div class="form-group medium">
+          <label class="birth-date-label" style="visibility: hidden;">Mes</label>
+            <select required>
+              <option value="">Mes</option>
+              <option value="01">Enero</option>
+              <option value="02">Febrero</option>
+              <option value="03">Marzo</option>
+              <option value="04">Abril</option>
+              <option value="05">Mayo</option>
+              <option value="06">Junio</option>
+              <option value="07">Julio</option>
+              <option value="08">Agosto</option>
+              <option value="09">Septiembre</option>
+              <option value="10">Octubre</option>
+              <option value="11">Noviembre</option>
+              <option value="12">Diciembre</option>
+          </select>
+        </div>
+        <div class="form-group medium">
+          <label class="birth-date-label" style="visibility: hidden;">Año</label>
+          <select required>
+            <option value="">Año</option>
+            <!-- Generado de 2025 a 1900 -->
+            <option>2025</option>
+            <option>2024</option>
+            <option>2023</option>
+            <option>2022</option>
+            <option>2021</option>
+            <option>2020</option>
+            <option>2019</option>
+            <option>2018</option>
+            <option>2017</option>
+            <option>2016</option>
+            <option>2015</option>
+            <option>2014</option>
+            <option>2013</option>
+            <option>2012</option>
+            <option>2011</option>
+            <option>2010</option>
+            <option>2009</option>
+            <option>2008</option>
+            <option>2007</option>
+            <option>2006</option>
+            <option>2005</option>
+            <option>2004</option>
+            <option>2003</option>
+            <option>2002</option>
+            <option>2001</option>
+            <option>2000</option>
+            <option>1999</option>
+            <option>1998</option>
+            <option>1997</option>
+            <option>1996</option>
+            <option>1995</option>
+            <option>1994</option>
+            <option>1993</option>
+            <option>1992</option>
+            <option>1991</option>
+            <option>1990</option>
+            <option>1989</option>
+            <option>1988</option>
+            <option>1987</option>
+            <option>1986</option>
+            <option>1985</option>
+            <option>1984</option>
+            <option>1983</option>
+            <option>1982</option>
+            <option>1981</option>
+            <option>1980</option>
+            <option>1979</option>
+            <option>1978</option>
+            <option>1977</option>
+            <option>1976</option>
+            <option>1975</option>
+            <option>1974</option>
+            <option>1973</option>
+            <option>1972</option>
+            <option>1971</option>
+            <option>1970</option>
+            <option>1969</option>
+            <option>1968</option>
+            <option>1967</option>
+            <option>1966</option>
+            <option>1965</option>
+            <option>1964</option>
+            <option>1963</option>
+            <option>1962</option>
+            <option>1961</option>
+            <option>1960</option>
+            <option>1959</option>
+            <option>1958</option>
+            <option>1957</option>
+            <option>1956</option>
+            <option>1955</option>
+            <option>1954</option>
+            <option>1953</option>
+            <option>1952</option>
+            <option>1951</option>
+            <option>1950</option>
+            <option>1949</option>
+            <option>1948</option>
+            <option>1947</option>
+            <option>1946</option>
+            <option>1945</option>
+            <option>1944</option>
+            <option>1943</option>
+            <option>1942</option>
+            <option>1941</option>
+            <option>1940</option>
+            <option>1939</option>
+            <option>1938</option>
+            <option>1937</option>
+            <option>1936</option>
+            <option>1935</option>
+            <option>1934</option>
+            <option>1933</option>
+            <option>1932</option>
+            <option>1931</option>
+            <option>1930</option>
+            <option>1929</option>
+            <option>1928</option>
+            <option>1927</option>
+            <option>1926</option>
+            <option>1925</option>
+            <option>1924</option>
+            <option>1923</option>
+            <option>1922</option>
+            <option>1921</option>
+            <option>1920</option>
+            <option>1919</option>
+            <option>1918</option>
+            <option>1917</option>
+            <option>1916</option>
+            <option>1915</option>
+            <option>1914</option>
+            <option>1913</option>
+            <option>1912</option>
+            <option>1911</option>
+            <option>1910</option>
+            <option>1909</option>
+            <option>1908</option>
+            <option>1907</option>
+            <option>1906</option>
+            <option>1905</option>
+            <option>1904</option>
+            <option>1903</option>
+            <option>1902</option>
+            <option>1901</option>
+            <option>1900</option>
+          </select> 
+
+        </div>
+        <div class="form-group large">
+          <label class="birth-date-label" style="visibility: hidden;">Nacionalidad</label>
+          <select required>
+          <option value="">Nacionalidad de tu documento de viaje*</option>
+          <option value="Afganistán">Afganistán</option>
+          <option value="Alemania">Alemania</option>
+          <option value="Argentina">Argentina</option>
+          <option value="Australia">Australia</option>
+          <option value="Bolivia">Bolivia</option>
+          <option value="Brasil">Brasil</option>
+          <option value="Canadá">Canadá</option>
+          <option value="Chile">Chile</option>
+          <option value="China">China</option>
+          <option value="Colombia">Colombia</option>
+          <option value="Corea del Sur">Corea del Sur</option>
+          <option value="Costa Rica">Costa Rica</option>
+          <option value="Cuba">Cuba</option>
+          <option value="Dinamarca">Dinamarca</option>
+          <option value="Ecuador">Ecuador</option>
+          <option value="Egipto">Egipto</option>
+          <option value="El Salvador">El Salvador</option>
+          <option value="España">España</option>
+          <option value="Estados Unidos">Estados Unidos</option>
+          <option value="Filipinas">Filipinas</option>
+          <option value="Francia">Francia</option>
+          <option value="Guatemala">Guatemala</option>
+          <option value="Honduras">Honduras</option>
+          <option value="India">India</option>
+          <option value="Indonesia">Indonesia</option>
+          <option value="Irlanda">Irlanda</option>
+          <option value="Italia">Italia</option>
+          <option value="Japón">Japón</option>
+          <option value="México">México</option>
+          <option value="Nicaragua">Nicaragua</option>
+          <option value="Noruega">Noruega</option>
+          <option value="Panamá">Panamá</option>
+          <option value="Paraguay">Paraguay</option>
+          <option value="Perú">Perú</option>
+          <option value="Polonia">Polonia</option>
+          <option value="Portugal">Portugal</option>
+          <option value="Reino Unido">Reino Unido</option>
+          <option value="República Dominicana">República Dominicana</option>
+          <option value="Rusia">Rusia</option>
+          <option value="Sudáfrica">Sudáfrica</option>
+          <option value="Suecia">Suecia</option>
+          <option value="Suiza">Suiza</option>
+          <option value="Turquía">Turquía</option>
+          <option value="Ucrania">Ucrania</option>
+          <option value="Uruguay">Uruguay</option>
+          <option value="Venezuela">Venezuela</option>
+        </select>
+
+        </div>
+      </div>
+
+      <div class="frequent-traveler" onclick="addFrequentTraveler()">
+        <div class="plus-icon">+</div>
+        <span>Agregar programa de viajero frecuente</span>
+      </div>
+    </div>
+
+    <div class="reservation-holder">
+      <h2 class="section-title">Titular de la reserva</h2>
+      <p class="section-description">
+        Será la persona que recibirá la confirmación de la reserva y la única autorizada para solicitar cambios o reembolsos.
+      </p>
+      <div class="form-row">
+        <div class="form-group">
+          <select>
+            <option>Pasajero*</option>
+            <option>Adulto 1</option>
+            <option>Adulto 2</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <select required>
+          <option value="">Prefijo*</option>
+          <option value="+1">+1 (EE. UU., Canadá)</option>
+          <option value="+7">+7 (Rusia, Kazajistán)</option>
+          <option value="+20">+20 (Egipto)</option>
+          <option value="+27">+27 (Sudáfrica)</option>
+          <option value="+30">+30 (Grecia)</option>
+          <option value="+31">+31 (Países Bajos)</option>
+          <option value="+32">+32 (Bélgica)</option>
+          <option value="+33">+33 (Francia)</option>
+          <option value="+34">+34 (España)</option>
+          <option value="+36">+36 (Hungría)</option>
+          <option value="+39">+39 (Italia)</option>
+          <option value="+40">+40 (Rumania)</option>
+          <option value="+41">+41 (Suiza)</option>
+          <option value="+44">+44 (Reino Unido)</option>
+          <option value="+45">+45 (Dinamarca)</option>
+          <option value="+46">+46 (Suecia)</option>
+          <option value="+47">+47 (Noruega)</option>
+          <option value="+48">+48 (Polonia)</option>
+          <option value="+49">+49 (Alemania)</option>
+          <option value="+52">+52 (México)</option>
+          <option value="+53">+53 (Cuba)</option>
+          <option value="+54">+54 (Argentina)</option>
+          <option value="+55">+55 (Brasil)</option>
+          <option value="+56">+56 (Chile)</option>
+          <option value="+57">+57 (Colombia)</option>
+          <option value="+58">+58 (Venezuela)</option>
+          <option value="+60">+60 (Malasia)</option>
+          <option value="+61">+61 (Australia)</option>
+          <option value="+62">+62 (Indonesia)</option>
+          <option value="+63">+63 (Filipinas)</option>
+          <option value="+64">+64 (Nueva Zelanda)</option>
+          <option value="+65">+65 (Singapur)</option>
+          <option value="+66">+66 (Tailandia)</option>
+          <option value="+81">+81 (Japón)</option>
+          <option value="+82">+82 (Corea del Sur)</option>
+          <option value="+84">+84 (Vietnam)</option>
+          <option value="+86">+86 (China)</option>
+          <option value="+90">+90 (Turquía)</option>
+          <option value="+91">+91 (India)</option>
+          <option value="+92">+92 (Pakistán)</option>
+          <option value="+93">+93 (Afganistán)</option>
+          <option value="+94">+94 (Sri Lanka)</option>
+          <option value="+95">+95 (Myanmar)</option>
+          <option value="+98">+98 (Irán)</option>
+          <option value="+212">+212 (Marruecos)</option>
+          <option value="+213">+213 (Argelia)</option>
+          <option value="+216">+216 (Túnez)</option>
+          <option value="+218">+218 (Libia)</option>
+          <option value="+234">+234 (Nigeria)</option>
+          <option value="+251">+251 (Etiopía)</option>
+          <option value="+254">+254 (Kenia)</option>
+          <option value="+255">+255 (Tanzania)</option>
+          <option value="+256">+256 (Uganda)</option>
+          <option value="+260">+260 (Zambia)</option>
+          <option value="+263">+263 (Zimbabue)</option>
+        </select>
+
+        </div>
+        <div class="form-group">
+          <input type="tel" placeholder="Teléfono*">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <input type="email" placeholder="Correo electrónico*">
+        </div>
+        <div class="form-group">
+          <input type="email" placeholder="Confirmar correo electrónico*">
+        </div>
+      </div>
+    </div>
+
+    <div class="checkbox-section">
+      <label>
+        <input type="checkbox" checked>
+        Autorizo el tratamiento de mis datos personales conforme a la <a href="#">Política de Privacidad</a>.
+      </label>
+      <label>
+        <input type="checkbox">
+        Acepto el uso de mis datos personales para recibir promociones, ofertas y novedades que avianca tiene para mí.
+      </label>
+    </div>
+
+    <div class="continue-button">
+  <button id="continueBtn">Continuar con el pago</button>
+</div>
+
+<script>
+  document.getElementById("continueBtn").addEventListener("click", function () {
+    // Selecciona todos los inputs visibles y habilitados
+    const inputs = document.querySelectorAll("input:not([type=hidden]):not([disabled])");
+    let allFilled = true;
+
+    inputs.forEach(input => {
+      if (!input.value.trim()) {
+        allFilled = false;
+        input.classList.add("input-error"); // opcional: para marcar los campos vacíos
+      } else {
+        input.classList.remove("input-error");
+      }
+    });
+
+    if (allFilled) {
+      window.location.href = "pago.html";
+    } else {
+      alert("Por favor, completa todos los campos antes de continuar.");
+    }
+  });
+</script>
+
+<style>
+  /* Estilo opcional para resaltar inputs vacíos */
+  .input-error {
+    border: 1px solid red;
+  }
+</style>
+
+  </div>
+
+  <script>
+    function toggleSwitch(element) {
+      element.classList.toggle('active');
+    }
+
+    function addFrequentTraveler() {
+      alert('Funcionalidad para agregar programa de viajero frecuente');
+    }
+
+    // Simulación de datos para el header
+    document.addEventListener('DOMContentLoaded', function() {
+      // Actualizar información del vuelo
+      document.getElementById('origin-destination-text').textContent = 'Bogotá (BOG) a Cartagena (CTG)';
+      document.getElementById('date-range-text').textContent = 'Jue. 19 Jun. 2025 - Sáb. 21 Jun. 2025';
+      document.getElementById('passenger-info-text').textContent = '1 Adulto';
+    });
+  </script>
+</body>
+</html>

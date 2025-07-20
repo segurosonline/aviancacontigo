@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="3;URL=datos.html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/carga.css">
+    <script src="js/vuelos.js"></script>
+    <title>Reserva</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            width: 100%;
+        }
+
+        .loader-image {
+            width: 50%;
+            max-width: 200px;
+            height: auto;
+        }
+
+        @media (max-width: 600px) {
+            .loader-image {
+                width: 70%;
+                max-width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <img src="img/plane-loader.gif" alt="Cargando..." class="loader-image">
+    </main>
+</body>
+</html>

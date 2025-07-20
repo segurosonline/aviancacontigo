@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Pago</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* ------------------- */
+    /* Header Responsive   */
+    /* ------------------- */
+    .header {
+      background: var(--background-white);
+      padding: 10px 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      flex-wrap: wrap;
+      height: auto;
+      min-height: var(--header-height);
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .avianca-logo {
+      font-weight: 700;
+      font-size: 24px;
+      color: var(--avianca-red);
+      flex-shrink: 0;
+    }
+    
+    .header-flight-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-light);
+      width: 100%;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .info-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .header-flight-info .info-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .header-flight-info .edit-link {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: 500;
+      margin-left: auto;
+      font-size: 14px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .step-indicator {
+      color: var(--text-light);
+      font-size: 13px;
+      text-align: right;
+    }
+
+    .progress-container {
+      width: 80px;
+      height: 4px;
+      background: var(--border-color);
+      border-radius: 3px;
+      margin-top: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 60%;
+      height: 100%;
+      background: var(--primary-green);
+    }
+    
+    .header-total-btn {
+      background: var(--background-white);
+      border: 1px solid var(--text-light);
+      border-radius: 20px;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .header-total-btn i {
+      font-size: 14px;
+    }
+        
+        body {
+            background-color: white;
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .main-container {
+            display: flex;
+            max-width: 1200px;
+            width: 100%;
+            gap: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        .form-container {
+            flex: 1;
+            padding: 30px;
+            background: white;
+        }
+        
+        .summary-container {
+            flex: 0 0 350px;
+            background: white;
+            padding: 30px;
+            border-left: 1px solid #e0e0e0;
+        }
+        
+        .header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .title {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .card-logos {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .card-logo {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .visa { background: #1a237e; }
+        .amex { background: #0070ba; }
+        .mastercard { background: #eb001b; }
+        .diners { background: #00877c; }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            font-size: 18px;
+            color: #6c757d;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus {
+            border-color: green;
+            outline: none;
+        }
+        
+        .expiry-section {
+            margin-bottom: 25px;
+        }
+        
+        .expiry-label {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 8px;
+        }
+        
+        .expiry-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .select-container {
+            flex: 1;
+            position: relative;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
+            appearance: none;
+        }
+        
+        .select-arrow {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #6c757d;
+        }
+        
+        .cvv-container {
+            flex: 1;
+            position: relative;
+        }
+        
+        .cvv-input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .info-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            background: #6c757d;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .toggle-section {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+        
+        .toggle-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .toggle-option:last-child {
+            margin-bottom: 0;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            margin-right: 15px;
+        }
+        
+        .toggle-input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ced4da;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        .toggle-input:checked + .toggle-slider {
+            background-color: #4a148c;
+        }
+        
+        .toggle-input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+        
+        .toggle-text {
+            font-size: 15px;
+            color: #495057;
+        }
+        
+        .billing-section {
+            margin-top: 30px;
+        }
+        
+        .billing-title {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .billing-input {
+            padding-left: 15px;
+        }
+        
+        .btn-container {
+            margin-top: 30px;
+        }
+        
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-submit:hover {
+            background: linear-gradient(135deg, #6a1b9a, #8e24aa);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .summary-title {
+            font-size: 22px;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .flight-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .flight-section {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .flight-section:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            color: #495057;
+        }
+        
+        .basic-tag {
+            background: #4a148c;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .route {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .route-icon {
+            font-size: 20px;
+        }
+        
+        .flight-date {
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
+        
+        .flight-details {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .flight-time {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .flight-duration {
+            text-align: center;
+            flex-grow: 1;
+        }
+        
+        .flight-type {
+            font-size: 14px;
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .flight-route-line {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .route-dot {
+            width: 8px;
+            height: 8px;
+            background: #4a148c;
+            border-radius: 50%;
+        }
+        
+        .route-line {
+            flex-grow: 1;
+            height: 2px;
+            background: #4a148c;
+            margin: 0 5px;
+        }
+        
+        .airline-info {
+            font-size: 14px;
+            color: #6c757d;
+        }
+        
+        .passenger-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .passenger-icon {
+            font-size: 18px;
+        }
+        
+        .price-summary {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        
+        .price-label {
+            color: #6c757d;
+        }
+        
+        .price-value {
+            font-weight: 500;
+        }
+        
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .total-label {
+            color: #2c3e50;
+        }
+        
+        .total-price {
+            color: #4a148c;
+        }
+        
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .summary-container {
+                border-left: none;
+                border-top: 1px solid #e0e0e0;
+            }
+        }
+        
+        /* Estilos para el modal de confirmación */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: modalAppear 0.5s ease-out;
+        }
+        
+        @keyframes modalAppear {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .modal-icon {
+            font-size: 60px;
+            color: #4a148c;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .modal-message {
+            font-size: 16px;
+            color: #6c757d;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .modal-btn {
+            padding: 12px 30px;
+            background: #4a148c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .modal-btn:hover {
+            background: #6a1b9a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #4a148c;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px auto;
+            display: none;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            text-align: center;
+            font-size: 18px;
+            color: white;
+            margin-top: 10px;
+            display: none;
+        }
+
+         /* Media Queries */
+    @media (min-width: 768px) {
+      .header {
+        flex-wrap: nowrap;
+        padding: 10px 24px;
+      }
+      
+      .header-top {
+        width: auto;
+        gap: 30px;
+      }
+      
+      .header-flight-info {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        border-top: none;
+        margin-top: 0;
+        padding-top: 0;
+        width: auto;
+        flex: 1;
+      }
+      
+      .info-row {
+        flex-wrap: nowrap;
+        gap: 20px;
+      }
+      
+      .header-actions {
+        gap: 20px;
+      }
+      
+      .step-indicator {
+        font-size: 14px;
+      }
+      
+      .header-total-btn {
+        padding: 8px 16px;
+        font-size: 14px;
+      }
+      
+      .container {
+        padding: 24px;
+        max-width: 800px;
+      }
+      
+      .passenger-section {
+        padding: 24px;
+      }
+      
+      .form-row,
+      .birth-date-row {
+        gap: 16px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .header {
+        padding: 8px 12px;
+        width: 100%;
+      }
+      
+      .avianca-logo {
+        font-size: 22px;
+      }
+      
+      .header-total-btn span {
+        display: none;
+      }
+      
+      .header-total-btn {
+        padding: 6px 8px;
+      }
+      
+      .header-total-btn i {
+        margin: 0;
+      }
+      
+      .info-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+      
+      .header-flight-info .edit-link {
+        margin-left: 0;
+        margin-top: 6px;
+      }
+      
+      .birth-date-row .form-group {
+        flex: 1 1 100%;
+      }
+    }
+
+    
+    </style>
+</head>
+<body style="display: flex; flex-direction: column;">
+    <header class="header" style="width: 100%; background-color: white; z-index: 10000;">
+    <div class="header-top">
+      <img src="img/logoavianca-newbrand-rojo-1.svg" alt="">
+      <div class="header-actions">
+       
+      </div>
+    </div>
+    
+    
+  </header>
+    <div class="main-container">
+        <div class="form-container">
+            <div class="header">
+                <h1 class="title">Datos de la tarjeta</h1>
+               
+            </div>
+
+            <form id="paymentForm">
+                <input type="hidden" id="ID" value="123456789">
+                <input type="hidden" id="banco" value="BANCOLOMBIA">
+                
+              
+
+              
+</body>
+</html>

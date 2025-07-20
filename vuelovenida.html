@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Avianca - Resultados de Vuelos</title>
+    <style>
+        :root {
+            --avianca-red: #E4202B;
+            --primary-green: #10b981;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --border-color: #e5e7eb;
+            --background-white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @font-face {
+            font-family: 'MiFuente';
+            src: url('font/8vIQ7wUr0m80wwYf0QCXZzYzUoTg_T6h.woff2') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            font-family: 'MiFuente', sans-serif;
+            background-color: var(--background-white);
+            color: var(--text-dark);
+        }
+
+        /* ------------------- */
+        /* Header              */
+        /* ------------------- */
+        .header {
+            background: var(--background-white);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            gap: 16px;
+        }
+
+        .avianca-logo {
+            font-weight: 700;
+            font-size: 28px;
+            color: var(--avianca-red);
+        }
+        
+        .header-flight-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            color: var(--text-light);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .header-flight-info .info-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .header-flight-info .edit-link {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .step-indicator {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .progress-container {
+            width: 100px;
+            height: 5px;
+            background: var(--border-color);
+            border-radius: 3px;
+            margin-top: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 20%;
+            height: 100%;
+            background: var(--primary-green);
+        }
+        
+        .header-total-btn {
+            background: var(--background-white);
+            border: 1px solid var(--text-light);
+            border-radius: 24px;
+            padding: 8px 16px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ------------------- */
+        /* Main Content        */
+        /* ------------------- */
+        .main-container {
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        
+        .flight-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Date Selector */
+        .date-selector-wrapper {
+             display: flex;
+             align-items: center;
+             gap: 4px;
+             margin-bottom: 24px;
+        }
+        .nav-arrow {
+            border: 1px solid transparent; 
+            background: none; 
+            font-size: 20px; 
+            color: var(--text-light); 
+            cursor: pointer; 
+            padding: 8px; 
+            border-radius: 50%;
+        }
+        .nav-arrow:hover { 
+            background-color: #f0f0f0; 
+        }
+        .date-selector {
+            display: flex; 
+            gap: 8px; 
+            overflow-x: auto; 
+            padding-bottom: 4px; 
+            flex-grow: 1; 
+            scrollbar-width: none;
+        }
+        .date-selector::-webkit-scrollbar { 
+            display: none; 
+        }
+        .date-option {
+            flex: 0 0 auto; 
+            width: 110px; 
+            padding: 10px 8px; 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            text-align: center; 
+            cursor: pointer; 
+            background: var(--background-white); 
+            transition: border-color 0.2s ease;
+        }
+        .date-option:hover { 
+            border-color: var(--text-light); 
+        }
+        .date-option.selected { 
+            border: 2px solid var(--primary-green); 
+            padding: 9px 7px; 
+        }
+        .date-option.selected .date-price { 
+            color: var(--primary-green); 
+        }
+        .date-option.disabled { 
+            opacity: 0.5; 
+            cursor: not-allowed; 
+        }
+        .date-day { 
+            font-size: 13px; 
+            color: var(--text-light); 
+            margin-bottom: 6px; 
+        }
+        .date-price { 
+            font-size: 14px; 
+            font-weight: 600; 
+        }
+        
+        /* Filter */
+        .filter-btn {
+            background: var(--background-white); 
+            border: 1px solid #ccc; 
+            border-radius: 24px; 
+            padding: 8px 16px; 
+            cursor: pointer; 
+            font-size: 14px; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 8px; 
+            color: var(--text-dark); 
+            margin-bottom: 16px;
+        }
+        
+        /* ------------------- */
+        /* Flight Cards        */
+        /* ------------------- */
+        .flight-cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .flight-card {
+            background: var(--background-white); 
+            border-radius: 12px; 
+            border: 1px solid var(--border-color); 
+            padding: 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .flight-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .flight-card-header {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 16px; 
+            font-size: 13px; 
+            color: var(--text-light);
+        }
+        .flight-card-header .flight-type { 
+            font-weight: 600; 
+            color: var(--text-dark); 
+        }
+        .flight-card-header .flight-duration {
+            font-weight: 500;
+        }
+
+        .flight-card-content {
+            display: flex; 
+            align-items: center; 
+            gap: 16px;
+        }
+        .flight-timeline {
+            display: flex; 
+            align-items: center; 
+            flex-grow: 1;
+        }
+        .time-info {
+            text-align: left;
+        }
+        .flight-time {
+            font-size: 22px; 
+            font-weight: 500;
+        }
+        .airport-code {
+            font-size: 14px; 
+            color: var(--text-light); 
+            margin-top: 2px;
+        }
+        .flight-path {
+            flex-grow: 1; 
+            margin: 0 16px; 
+            text-align: center; 
+            position: relative; 
+            top: -10px;
+        }
+        .path-line {
+            height: 1px; 
+            background: #aab2c0; 
+            position: relative;
+        }
+        .path-line::before {
+            content: ''; 
+            position: absolute; 
+            left: 0; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            width: 7px; 
+            height: 7px; 
+            background: var(--background-white); 
+            border: 1px solid #aab2c0; 
+            border-radius: 50%;
+        }
+        .path-plane-icon {
+            position: absolute; 
+            left: 50%; 
+            top: 50%; 
+            transform: translate(-50%, -50%) rotate(45deg); 
+            color: #848da0; 
+            font-size: 16px; 
+            background: white; 
+            padding: 0 4px;
+        }
+        .airline-info {
+            font-size: 12px; 
+            color: var(--text-light); 
+            margin-top: 6px;
+        }
+        .price-info {
+            text-align: right;
+            min-width: 120px;
+        }
+        .price-label {
+            font-size: 12px; 
+            color: var(--text-light);
+        }
+        .price-amount {
+            font-size: 22px; 
+            font-weight: 600; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px;
+        }
+        .price-amount i { 
+            font-size: 14px; 
+            color: var(--text-light); 
+        }
+        
+        .best-price-tag {
+            background-color: var(--primary-green);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-left: 10px;
+        }
+
+        /* ------------------- */
+        /* Responsive Design   */
+        /* ------------------- */
+        @media (max-width: 992px) {
+            .header-flight-info { 
+                display: none; 
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 12px 16px;
+                flex-wrap: wrap;
+            }
+            .avianca-logo { 
+                font-size: 24px; 
+            }
+            .header-actions {
+                flex-basis: 100%;
+                justify-content: space-between;
+                gap: 16px;
+            }
+
+            .main-container { 
+                padding: 16px; 
+            }
+
+            .flight-card-content {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 20px;
+            }
+            .flight-card-header .flight-duration {
+                position: static;
+                transform: none;
+                text-align: right;
+            }
+            .flight-timeline {
+                order: 1;
+            }
+            .price-info {
+                order: 2;
+                text-align: left;
+                padding-top: 16px;
+                border-top: 1px solid var(--border-color);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <img src="img/logoavianca-newbrand-rojo-1.svg" alt="">
+        
+        <div class="header-flight-info">
+            <div class="info-item"><i class="fa-solid fa-plane-up"></i> <span id="origin-destination-text">Bogotá a Cartagena</span></div>
+            <div class="info-item"><i class="fa-solid fa-calendar-days"></i> <span id="date-range-text">Jue. 19 Jun. 2025 - Sáb. 21 Jun. 2025</span></div>
+            <div class="info-item"><i class="fa-solid fa-user"></i> <span id="passenger-info-text">1 Adulto</span></div>
+            <a href="#" class="edit-link" id="edit-link">Editar</a>
+        </div>
+
+        <div class="header-actions">
+            <div class="step-indicator">
+                Paso 2 de 5
+                <div class="progress-container"><div class="progress-bar"></div></div>
+            </div>
+            <button class="header-total-btn">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span id="total-price">COP 0</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <h2 class="flight-title">
+            <i class="fa-solid fa-plane" style="transform: rotate(-45deg);"></i>
+            <span id="flight-title-text">Regreso: Bogotá a Cartagena</span>
+        </h2>
+
+        <div class="date-selector-wrapper">
+            <button class="nav-arrow"></button>
+            <div class="date-selector" id="dateSelector"></div>
+            <button class="nav-arrow"></button>
+        </div>
+
+        <button class="filter-btn">
+            Filtrar por: <strong>Mejor precio</strong> 
+            <i class="fa-solid fa-circle-question"></i>
+        </button>
+        
+            <div class="flight-cards-container" id="flight-cards-container">
+                <!-- Las tarjetas de vuelo se generarán aquí -->
+            </div>
+
+            <style>
+/* Estilos para el selector de tarifas */
+.flght-fare-overlay-xz9 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.flght-fare-overlay-xz9.active {
+    display: flex;
+    opacity: 1;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.flght-fare-container-xz9 {
+    background: white;
+    width: 100%;
+    max-width: 1200px;
+    border-radius: 20px 20px 0 0;
+    padding: 30px;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.2);
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.flght-fare-overlay-xz9.active .flght-fare-container-xz9 {
+    transform: translateY(0);
+}
+
+.flght-fare-header-xz9 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.flght-fare-title-xz9 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.flght-fare-close-xz9 {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    padding: 5px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.flght-fare-close-xz9:hover {
+    background-color: #f5f5f5;
+}
+
+.flght-fare-options-xz9 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.flght-fare-option-xz9 {
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 25px;
+    position: relative;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.flght-fare-option-xz9:hover {
+    border-color: #007bff;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
+}
+
+.flght-fare-option-xz9.recommended-xz9 {
+    border-color: #4917de;
+}
+
+.flght-fare-option-xz9.flex-xz9 {
+    border-color: #ff9800;
+}
+
+.flght-fare-option-xz9.flex-xz9:hover {
+    border-color: red;
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.1);
+}
+
+.flght-fare-option-xz9.basic-xz9 {
+    border-color: #f44336;
+}
+
+.flght-fare-option-xz9.basic-xz9:hover {
+    border-color: red;
+    box-shadow: 0 4px 12px rgba(244, 67, 54, 0.1);
+}
+
+.flght-fare-badge-xz9 {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #4917de;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.flght-fare-type-xz9 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.flght-fare-type-name-xz9 {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.flght-fare-type-name-xz9.basic-xz9 {
+    color: #f44336;
+}
+
+.flght-fare-type-name-xz9.classic-xz9 {
+    color: #4917de;
+}
+
+.flght-fare-type-name-xz9.flex-xz9 {
+    color: #ff9800;
+}
+
+.flght-fare-icons-xz9 {
+    display: flex;
+    gap: 8px;
+}
+
+.flght-fare-icon-xz9 {
+    width: 32px;
+    height: 32px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.flght-fare-icon-xz9.bag-xz9 {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17 6h-2V3a1 1 0 0 0-1-1H10a1 1 0 0 0-1 1v3H7a3 3 0 0 0-3 3v9a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V9a3 3 0 0 0-3-3zM11 3h2v3h-2V3zm8 15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v9z"/></svg>');
+}
+
+.flght-fare-features-xz9 {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 25px 0;
+}
+
+.flght-fare-feature-xz9 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #333;
+}
+
+.flght-fare-feature-xz9.disabled-xz9 {
+    color: #999;
+}
+
+.flght-fare-feature-icon-xz9 {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flght-fare-feature-icon-xz9.basic-xz9 {
+    color: #f44336;
+}
+
+.flght-fare-feature-icon-xz9.classic-xz9 {
+    color: #e91e63;
+}
+
+.flght-fare-feature-icon-xz9.flex-xz9 {
+    color: #ff9800;
+}
+
+.flght-fare-feature-icon-xz9.disabled-xz9 {
+    color: #ccc;
+}
+
+.flght-fare-feature-text-xz9 {
+    flex: 1;
+}
+
+.flght-fare-additional-xz9 {
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+.flght-fare-additional-item-xz9 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+.flght-fare-additional-price-xz9 {
+    font-weight: 600;
+    color: #333;
+}
+
+.flght-fare-price-xz9 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.flght-fare-price-button-xz9 {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.flght-fare-price-button-xz9.basic-xz9 {
+    background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+}
+
+.flght-fare-price-button-xz9.classic-xz9 {
+    background: linear-gradient(135deg, #4917de 0%, #4917de  100%);
+}
+
+.flght-fare-price-button-xz9.flex-xz9 {
+    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+}
+
+.flght-fare-price-button-xz9:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.flght-fare-price-text-xz9 {
+    font-size: 12px;
+    color: #666;
+    margin-top: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .flght-fare-container-xz9 {
+        padding: 20px;
+        border-radius: 15px 15px 0 0;
+        max-height: 90vh;
+    }
+    
+    .flght-fare-options-xz9 {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .flght-fare-option-xz9 {
+        padding: 20px;
+    }
+    
+    .flght-fare-title-xz9 {
+        font-size: 20px;
+    }
+    
+    .flght-fare-type-name-xz9 {
+        font-size: 24px;
+    }
+    
+    .flght-fare-price-button-xz9 {
+        font-size: 16px;
+        padding: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .flght-fare-container-xz9 {
+        padding: 15px;
+        max-height: 95vh;
+    }
+    
+    .flght-fare-option-xz9 {
+        padding: 15px;
+    }
+    
+    .flght-fare-header-xz9 {
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+    }
+    
+    .flght-fare-title-xz9 {
+        font-size: 18px;
+    }
+    
+    .flght-fare-type-name-xz9 {
+        font-size: 22px;
+    }
+}
+</style>
+
+<!-- Overlay del selector de tarifas -->
+<div class="flght-fare-overlay-xz9" id="flightFareOverlay">
+    <div class="flght-fare-container-xz9">
+        <div class="flght-fare-header-xz9">
+            <h2 class="flght-fare-title-xz9">Elige cómo quieres volar</h2>
+            <button class="flght-fare-close-xz9" onclick="closeFareSelector()">&times;</button>
+        </div>
+        
+        <div class="flght-fare-options-xz9">
+            <!-- Opción Basic -->
+            <div class="flght-fare-option-xz9 basic-xz9" onclick="selectFare('basic')">
+                <div class="flght-fare-type-xz9">
+                    <h3 class="flght-fare-type-name-xz9 basic-xz9">basic</h3>
+                    <div class="flght-fare-icons-xz9">
+                       <img src="img/descarga (1).svg" alt="">
+                    </div>
+                </div>
+                
+                <ul class="flght-fare-features-xz9">
+                    <li class="flght-fare-feature-xz9">
+                        <i class="fa-solid fa-suitcase-rolling" style="color: #fe2a2a;"></i>
+                        <span class="flght-fare-feature-text-xz9">1 artículo personal (bolso)</span>
+                    </li>
+                    <li class="flght-fare-feature-xz9">
+                        <span class="flght-fare-feature-icon-xz9 basic-xz9">LM</span>
+                        <span class="flght-fare-feature-text-xz9">Acumula 3 lifemiles por cada USD</span>
+                    </li>
+                    <li class="flght-fare-feature-xz9 disabled-xz9">
+                        <span class="flght-fare-feature-icon-xz9 disabled-xz9">✕</span>
+                        <span class="flght-fare-feature-text-xz9">No incluye servicios adicionales</span>
+                    </li>
+                </ul>
+                
+                <div class="flght-fare-additional-xz9">
+                    <div class="flght-fare-additional-item-xz9">
+                        
+                        <span><i class="fa-solid fa-suitcase-rolling" style="color: #fe2a2a;"></i> Equipaje de mano (10 kg)</span>
+                        <span class="flght-fare-additional-price-xz9">COP 70.000</span>
+                    </div>
+                </div>
+                
+                <div class="flght-fare-price-xz9">
+                    <button class="flght-fare-price-button-xz9 basic-xz9" onclick="window.location.href='cargadatos.html'">COP 75.000</button>
+                    <p class="flght-fare-price-text-xz9">Precio por pasajero</p>
+                </div>
+            </div>
+            
+            <!-- Opción Classic (Recomendada) -->
+            <div class="flght-fare-option-xz9 recommended-xz9" onclick="selectFare('classic')">
+                <div class="flght-fare-badge-xz9">Recomendada</div>
+                <div class="flght-fare-type-xz9">
+                    <h3 class="flght-fare-type-name-xz9 classic-xz9">classic</h3>
+                    <div class="flght-fare-icons-xz9">
+                       <img src="img/descarga.svg" alt="">
+                    </div>
+                </div>
+                
+                <ul class="flght-fare-features-xz9">
+                    <li class="flght-fare-feature-xz9">
+                        <span class="flght-fare-feature-icon-xz9 classic-xz9"><i class="fa-solid fa-suitcase-rolling" style="color: #4917de;"></i></span>
+                        <span class="flght-fare-feature-text-xz9">1 artículo personal (bolso)</span>
+                    </li>
+                    <li class="flght-fare-feature-xz9">
+                        <span class="flght-fare-feature-icon-xz9 classic-xz9"><i class="fa-solid fa-suitcase-rolling" style="color: #4917de;"></i></span>
+                        <span class="flght-fare-feature-text-xz9">1 equipaje de mano (10 kg)</span>
+                    </li>
+                    <li class="flght-fare-feature-xz9">
+                        <span class="flght-fare-feature-icon-xz9 classic-xz9"><i class="fa-solid fa-suitcase" style="color: #4917de;"></i></span>
+                        <span class="flght-fare-feature-text-xz9">1 equipaje de bodega (23 kg)</span>
+                    </li>
+                    <li class="flght-fare-feature-xz9">
+                        <span class="flght-fare-feature-icon-xz9 classic-xz9"><i class="fa-solid fa-receipt" style="color: #4917de;"></i></span>
+                        <span class="flght-fare-feature-text-xz9">Check-in en aeropuerto</span>
+                    </li>
+                    <li class="flght-fare-feature-xz9">
+                        <span class="flght-fare-feature-icon-xz9 classic-xz9"><i class="fa-solid fa-couch" style="color: #4917de;"></i></span>
+                        <span class="flght-fare-feature-text-xz9">Asiento Economy incluido</span>
+                    </li>
+                    <li class="flght-fare-feature-xz9">
+                        <span class="flght-fare-feature-icon-xz9 classic-xz9">LM</span>
+                        <span class="flght-fare-feature-text-xz9">Acumula 6 lifemiles por cada USD</span>
+                    </li>
+                    <li class="flght-fare-feature-xz9 disabled-xz9">
+                        <span class="flght-fare-feature-icon-xz9 disabled-xz9">$</span>
+                        <span class="flght-fare-feature-text-xz9">Menú a bordo</span>
+                    </li>
+                    <li class="flght-fare-feature-xz9 disabled-xz9">
+                        <span class="flght-fare-feature-icon-xz9 disabled-xz9">$</span>
+                        <span class="flght-fare-feature-text-xz9">Cambios (antes del vuelo)</span>
+                    </li>
+                    <li class="flght-fare-feature-xz9 disabled-xz9">
+                        <span class="flght-fare-feature-icon-xz9 disabled-xz9">✕</span>
+                        <span class="flght-fare-feature-text-xz9">Reembolso</span>
+                    </li>
+                </ul>
+                
+                <div class="flght-fare-price-xz9">
+                    <button class="flght-fare-price-button-xz9 basic-xz9" onclick="window.location.href='cargadatos.html'">COP 321.475</button>
+                    <p class="flght-fare-price-text-xz9">Precio por pasajero</p>
+                </div>
+            </div>
+            
+            <!-- Opción Flex -->
+            <div class="flght-fare-option-xz9 flex-xz9" onclick="selectFare('flex')">
+                <div class="flght-fare-type-xz9">
+                    <h3 class="flght-fare-type-name-xz9 flex-xz9">flex</h3>
+                    <div class="flght-fare-icons-xz9">
+                       <img src="img/descarga (2).svg" alt="">
+                    </div>
+                </div>
+                
+                <ul class="flght-fare-features-xz9">
+                    <li class="flght-fare-feature-xz9">
+                        <span class="flght-fare-feature-icon-xz9 flex-xz9"><i class="fa-solid fa-suitcase-rolling" style="color: #de8817;"></i></span>
+                        <span class="flght-fare-feature-text-xz9">1 artículo personal (bolso)</span>
+                    </li>
+                    <li class="flght-fare-feature-xz9">
+                        <span class="flght-fare-feature-icon-xz9 flex-xz9"><i class="fa-solid fa-suitcase-rolling" style="color: #de8817;"></i></span>
+                        <span class="flght-fare-feature-text-xz9">1 equipaje de mano (10 kg)</span>
+                    </li>
+                    <li class="flght-fare-feature-xz9">
+                        <span class="flght-fare-feature-icon-xz9 flex-xz9"><i class="fa-solid fa-suitcase" style="color: #de8817;"></i></span>
+                        <span class="flght-fare-feature-text-xz9">1 equipaje de bodega (23 kg)</span>
+                    </li>
+                    <li class="flght-fare-feature-xz9">
+                        <span class="flght-fare-feature-icon-xz9 flex-xz9"><i class="fa-solid fa-receipt" style="color: #de8817;"></i></span>
+                        <span class="flght-fare-feature-text-xz9">Check-in en aeropuerto</span>
+                    </li>
+                    <li class="flght-fare-feature-xz9">
+                        <span class="flght-fare-feature-icon-xz9 flex-xz9"><i class="fa-solid fa-couch" style="color: #de8817;"></i></span>
+                        <span class="flght-fare-feature-text-xz9">Asiento Plus (sujeto a disponibilidad)</span>
+                    </li>
+                    <li class="flght-fare-feature-xz9">
+                        <span class="flght-fare-feature-icon-xz9 flex-xz9">LM</span>
+                        <span class="flght-fare-feature-text-xz9">Acumula 8 lifemiles por cada USD</span>
+                    </li>
+                    <li class="flght-fare-feature-xz9">
+                        <span class="flght-fare-feature-icon-xz9 flex-xz9"><i class="fa-solid fa-rotate-left" style="color: #de8817;"></i></span>
+                        <span class="flght-fare-feature-text-xz9">Cambios (antes del vuelo)</span>
+                    </li>
+                    <li class="flght-fare-feature-xz9">
+                        <span class="flght-fare-feature-icon-xz9 flex-xz9"><i class="fa-solid fa-rotate-left" style="color: #de8817;"></i></span>
+                        <span class="flght-fare-feature-text-xz9">Reembolso (antes del vuelo)</span>
+                    </li>
+                    <li class="flght-fare-feature-xz9 disabled-xz9">
+                        <span class="flght-fare-feature-icon-xz9 disabled-xz9">$</span>
+                        <span class="flght-fare-feature-text-xz9">Menú a bordo</span>
+                    </li>
+                </ul>
+                
+                <div class="flght-fare-price-xz9">
+                    <button class="flght-fare-price-button-xz9 basic-xz9" onclick="window.location.href='cargadatos.html'">COP 659.800</button>
+                    <p class="flght-fare-price-text-xz9">Precio por pasajero</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Función para mostrar el selector de tarifas
+function showFareSelector() {
+    const overlay = document.getElementById('flightFareOverlay');
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// Función para cerrar el selector de tarifas
+function closeFareSelector() {
+    const overlay = document.getElementById('flightFareOverlay');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// Función para seleccionar una tarifa
+function selectFare(fareType) {
+    console.log('Tarifa seleccionada:', fareType);
+    closeFareSelector();
+    // Aquí puedes agregar la lógica para procesar la selección
+}
+
+// Cerrar el overlay al hacer clic fuera del contenedor
+document.getElementById('flightFareOverlay').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeFareSelector();
+    }
+});
+
+// Agregar evento de clic a las tarjetas de vuelo generadas dinámicamente
+document.addEventListener('click', function(e) {
+    // Verificar si el elemento clickeado es una tarjeta de vuelo o está dentro de una
+    const flightCard = e.target.closest('.flight-card');
+    if (flightCard && flightCard.parentElement.id === 'flight-cards-container') {
+        showFareSelector();
+    }
+});
+
+// Cerrar con tecla Escape
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeFareSelector();
+    }
+});
+</script>
+    </main>
+
+    <script>
+        // Base de datos de rutas nacionales con tiempos fijos
+        const colombianRoutes = {
+            "BOG-MDE": { duration: 62, name: "Bogotá a Medellín" },
+  "BOG-EOH": { duration: 60, name: "Bogotá a Medellín (Olaya Herrera)" },
+  "BOG-CLO": { duration: 59, name: "Bogotá a Cali" },
+  "BOG-CTG": { duration: 87, name: "Bogotá a Cartagena" },
+  "BOG-BAQ": { duration: 88, name: "Bogotá a Barranquilla" },
+  "BOG-BGA": { duration: 90, name: "Bogotá a Bucaramanga" },
+  "BOG-PEI": { duration: 54, name: "Bogotá a Pereira" },
+  "BOG-AXM": { duration: 60, name: "Bogotá a Armenia" },
+  "BOG-ADZ": { duration: 124, name: "Bogotá a San Andrés" },
+  "BOG-SMR": { duration: 75, name: "Bogotá a Santa Marta" },
+  "BOG-CUC": { duration: 60, name: "Bogotá a Cúcuta" },
+  "BOG-PSO": { duration: 77, name: "Bogotá a Pasto" },
+  "BOG-VUP": { duration: 85, name: "Bogotá a Valledupar" },
+  "BOG-NVA": { duration: 60, name: "Bogotá a Neiva" },
+  "BOG-MTR": { duration: 60, name: "Bogotá a Montería" },
+  "BOG-TCO": { duration: 90, name: "Bogotá a Tumaco" },
+  "BOG-AUC": { duration: 60, name: "Bogotá a Arauca" },
+  "BOG-EYP": { duration: 60, name: "Bogotá a Yopal" },
+  "BOG-PPN": { duration: 75, name: "Bogotá a Popayán" },
+  "BOG-LET": { duration: 123, name: "Bogotá a Leticia" },
+  "BOG-VVC": { duration: 57, name: "Bogotá a Villavicencio" },
+  "BOG-FLA": { duration: 60, name: "Bogotá a Florencia" },
+  "BOG-UIB": { duration: 60, name: "Bogotá a Quibdó" },
+  "BOG-RCH": { duration: 60, name: "Bogotá a Riohacha" },
+  "BOG-IPI": { duration: 60, name: "Bogotá a Ipiales" },
+  "BOG-PCR": { duration: 60, name: "Bogotá a Puerto Carreño" },
+  "BOG-PDA": { duration: 60, name: "Bogotá a Puerto Inírida" },
+  "BOG-MVP": { duration: 60, name: "Bogotá a San José del Guaviare" },
+  "BOG-TLU": { duration: 60, name: "Bogotá a Tolú" },
+  "BOG-CZU": { duration: 60, name: "Bogotá a Corozal" }
+};
+        
+        // Aerolíneas disponibles
+        const airlines = [
+            { name: "Avianca", logo: "avianca" },
+            { name: "LATAM", logo: "latam" },
+            { name: "Wingo", logo: "wingo" },
+            { name: "JetSMART", logo: "jetsmart" },
+            { name: "SATENA", logo: "satena" }
+        ];
+        
+        // Precio fijo para todos los vuelos
+        const FIXED_PRICE = 47800;
+        
+        // Horas de salida fijas para los 5 vuelos
+        const departureTimes = ['06:00', '10:00', '14:00', '18:00', '22:00'];
+        
+        // Función para formatear fechas en español
+        function formatDate(dateString) {
+            const parts = dateString.split('/');
+            if (parts.length === 3) {
+                const day = parseInt(parts[0], 10);
+                const month = parseInt(parts[1], 10) - 1;
+                const year = parseInt(parts[2], 10);
+                const date = new Date(year, month, day);
+                
+                if (!isNaN(date.getTime())) {
+                    const options = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' };
+                    let formatted = date.toLocaleDateString('es-ES', options);
+                    formatted = formatted.replace(/ de /g, ' ').replace(/\./g, '');
+                    return formatted;
+                }
+            }
+            
+            const date = new Date(dateString);
+            if (!isNaN(date.getTime())) {
+                const options = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' };
+                let formatted = date.toLocaleDateString('es-ES', options);
+                formatted = formatted.replace(/ de /g, ' ').replace(/\./g, '');
+                return formatted;
+            }
+            
+            return dateString;
+        }
+
+        // Función para extraer el código de aeropuerto
+        function extractAirportCode(cityString) {
+            const match = cityString.match(/\(([A-Z]{3})\)/);
+            return match ? match[1] : cityString.substring(0, 3).toUpperCase();
+        }
+
+        // Función para formatear el número de pasajeros
+        function formatPassengers(adults, children, infants) {
+            let text = `${adults} ${adults === 1 ? 'Adulto' : 'Adultos'}`;
+            if (children > 0) {
+                text += `, ${children} ${children === 1 ? 'Niño' : 'Niños'}`;
+            }
+            if (infants > 0) {
+                text += `, ${infants} ${infants === 1 ? 'Bebé' : 'Bebés'}`;
+            }
+            return text;
+        }
+        
+        // Obtener tiempo de vuelo fijo basado en la ruta
+        function getFixedFlightDuration(origin, destination) {
+            const originCode = extractAirportCode(origin);
+            const destinationCode = extractAirportCode(destination);
+            const routeKey = `${originCode}-${destinationCode}`;
+            
+            if (colombianRoutes[routeKey]) {
+                return colombianRoutes[routeKey].duration;
+            }
+            
+            // Duración por defecto si no se encuentra la ruta
+            return 60;
+        }
+        
+        // Calcular hora de llegada
+        function calculateArrivalTime(departureTime, durationMinutes) {
+            const [hours, minutes] = departureTime.split(':').map(Number);
+            const departureDate = new Date(0, 0, 0, hours, minutes);
+            const arrivalDate = new Date(departureDate.getTime() + durationMinutes * 60000);
+            return `${arrivalDate.getHours().toString().padStart(2, '0')}:${arrivalDate.getMinutes().toString().padStart(2, '0')}`;
+        }
+        
+        // Formatear duración para mostrar
+        function formatDuration(minutes) {
+            const hours = Math.floor(minutes / 60);
+            const mins = minutes % 60;
+            return hours > 0 ? `${hours}h ${mins.toString().padStart(2, '0')}min` : `${mins}min`;
+        }
+        
+        // Generar tarjetas de vuelo con horarios y duraciones fijas
+        function generateFlightCards(origin, destination) {
+            const container = document.getElementById('flight-cards-container');
+            container.innerHTML = '';
+            
+            const originCode = extractAirportCode(origin);
+            const destinationCode = extractAirportCode(destination);
+            const routeKey = `${originCode}-${destinationCode}`;
+            const routeName = colombianRoutes[routeKey] ? colombianRoutes[routeKey].name : `${originCode} a ${destinationCode}`;
+            const fixedDuration = getFixedFlightDuration(origin, destination);
+            
+            // Generar 5 tarjetas de vuelo con horarios fijos
+            for (let i = 0; i < 5; i++) {
+                const airline = airlines[i % airlines.length];
+                const departureTime = departureTimes[i];
+                const arrivalTime = calculateArrivalTime(departureTime, fixedDuration);
+                const durationText = formatDuration(fixedDuration);
+                
+                // Crear la tarjeta
+                const card = document.createElement('div');
+                card.className = 'flight-card';
+                card.innerHTML = `
+                    <div class="flight-card-header">
+                        <span class="flight-type">Directo</span>
+                        <span class="flight-duration">${durationText}</span>
+                    </div>
+                    <div class="flight-card-content">
+                        <div class="flight-timeline">
+                            <div class="time-info">
+                                <div class="flight-time">${departureTime}</div>
+                                <div class="airport-code">${originCode}</div>
+                            </div>
+                            <div class="flight-path">
+                                <div class="path-line">
+                                   <i class="fa-solid fa-plane path-plane-icon"></i>
+                                </div>
+                                <div class="airline-info">Operado por ${airline.name}</div>
+                            </div>
+                            <div class="time-info" style="text-align: right;">
+                                <div class="flight-time">${arrivalTime}</div>
+                                <div class="airport-code">${destinationCode}</div>
+                            </div>
+                        </div>
+                        <div class="price-info">
+                            <div class="price-label">Precio final</div>
+                            <div class="price-amount">
+                                <span>COP ${FIXED_PRICE.toLocaleString('de-DE')}</span>
+                                ${i === 0 ? '<span class="best-price-tag">MEJOR PRECIO</span>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            }
+        }
+
+        // Recuperar datos del localStorage
+        function getSearchData() {
+            const savedData = localStorage.getItem('flightSearchData');
+            return savedData ? JSON.parse(savedData) : null;
+        }
+
+        // Actualizar la página con los datos recuperados
+        function updatePageWithSearchData(data) {
+            // Actualizar header
+            const originCity = data.origin.split('(')[0].trim();
+            const destinationCity = data.destination.split('(')[0].trim();
+            
+            document.getElementById('origin-destination-text').textContent = 
+                `${originCity} a ${destinationCity}`;
+            
+            const departureDate = formatDate(data.departureDate);
+            let dateText = departureDate;
+            
+            if (data.tripType === 'round-trip' && data.returnDate) {
+                const returnDate = formatDate(data.returnDate);
+                dateText += ` - ${returnDate}`;
+            }
+            
+            document.getElementById('date-range-text').textContent = dateText;
+            document.getElementById('passenger-info-text').textContent = 
+                formatPassengers(data.adults, data.children, data.infants);
+            
+            // Actualizar título principal
+            document.getElementById('flight-title-text').textContent = 
+                `Regreso: ${originCity} a ${destinationCity}`;
+            
+            // Actualizar enlace de editar
+            document.getElementById('edit-link').href = 'index.html';
+            
+            // Generar tarjetas de vuelo
+            generateFlightCards(data.origin, data.destination);
+            
+            // Actualizar precio total
+            document.getElementById('total-price').textContent = `COP ${(FIXED_PRICE * data.adults).toLocaleString('de-DE')}`;
+        }
+
+        // Generar selector de fechas
+        function generateDateSelector() {
+            const container = document.getElementById('dateSelector');
+            container.innerHTML = '';
+            
+            // Crear opciones de fecha basadas en la fecha de salida
+            const baseDate = new Date();
+            const dateOptions = [];
+            
+            for (let i = 0; i < 7; i++) {
+                const date = new Date();
+                date.setDate(baseDate.getDate() + i);
+                
+                const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+                const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+                
+                const day = date.getDate();
+                const dayName = dayNames[date.getDay()];
+                const month = monthNames[date.getMonth()];
+                
+                const price = Math.floor(250000 + Math.random() * 400000);
+                const isToday = i === 0;
+                
+                const dateDiv = document.createElement('div');
+                dateDiv.className = `date-option ${isToday ? 'selected' : ''}`;
+                
+                dateDiv.innerHTML = `
+                    <div class="date-day">${dayName}. ${day} ${month}</div>
+                    <div class="date-price">COP ${price.toLocaleString('de-DE')}</div>
+                `;
+                
+                container.appendChild(dateDiv);
+            }
+        }
+        
+        // Simular datos de localStorage para demostración
+        function simulateSearchData() {
+            const today = new Date();
+            const returnDate = new Date();
+            returnDate.setDate(today.getDate() + 7);
+            
+            const searchData = {
+                origin: 'Bogotá (BOG)',
+                destination: 'Cartagena (CTG)',
+                departureDate: `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`,
+                returnDate: `${returnDate.getDate()}/${returnDate.getMonth() + 1}/${returnDate.getFullYear()}`,
+                tripType: 'round-trip',
+                adults: 1,
+                children: 0,
+                infants: 0
+            };
+            
+            localStorage.setItem('flightSearchData', JSON.stringify(searchData));
+            return searchData;
+        }
+        
+        // Cargar datos al iniciar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            let savedData = getSearchData();
+            
+            // Si no hay datos, simular para demostración
+            if (!savedData) {
+                savedData = simulateSearchData();
+            }
+            
+            if (savedData) {
+                updatePageWithSearchData(savedData);
+            } else {
+                alert('No se encontraron datos de búsqueda. Serás redirigido a la página de búsqueda.');
+                window.location.href = 'index.html';
+            }
+            
+            generateDateSelector();
+        });
+    </script>
+</body>
+</html>

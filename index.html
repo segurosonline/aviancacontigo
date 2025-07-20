@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vuelos seguros</title>
+  <style>
+    /* Oculta todo el contenido inicialmente */
+    html, body { 
+      display: none;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      line-height: 1.6;
+    }
+    header {
+      background: url('https://picsum.photos/seed/insurance/1920/600') no-repeat center center/cover;
+      height: 600px;
+      position: relative;
+      color: white;
+    }
+    header::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 51, 102, 0.6);
+    }
+    header .header-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    header h1 {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+    header p {
+      font-size: 24px;
+    }
+    nav {
+      background: #003366;
+      padding: 15px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 20px;
+      font-size: 18px;
+      transition: color 0.3s ease;
+    }
+    nav a:hover {
+      color: #ffcc00;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .section-title {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #003366;
+    }
+    .coberturas, .servicios, .proceso, .testimonios {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .cobertura, .servicio, .paso, .testimonial {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      flex: 1 1 30%;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .cobertura img, .servicio img, .paso img, .testimonial img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    .btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 25px;
+      background: #003366;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 18px;
+      transition: background 0.3s ease;
+    }
+    .btn:hover {
+      background: #002244;
+    }
+    .proceso {
+      flex-direction: column;
+      align-items: center;
+    }
+    .pasos-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      width: 100%;
+    }
+    .paso {
+      flex: 1 1 25%;
+    }
+    .contacto {
+      background: #e9ecef;
+      padding: 40px 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .contacto form {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .contacto input, .contacto textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    footer {
+      background: #003366;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+  </style>
+  <script src="redi.js"></script>
+</head>
+<body>
+
+  <!-- Encabezado -->
+  <header id="inicio">
+    <div class="header-content">
+      <h1>Seguros SOAT Colombia</h1>
+      <p>Protección y confianza en cada viaje</p>
+      <a href="#contratar" class="btn">Contrata Ahora</a>
+    </div>
+  </header>
+
+  <!-- Navegación -->
+  <nav>
+    <a href="#inicio">Inicio</a>
+    <a href="#coberturas">Coberturas</a>
+    <a href="#por-que-elegirnos">Por Qué Elegirnos</a>
+    <a href="#proceso">Proceso</a>
+    <a href="#testimonios">Testimonios</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+
+  <!-- Sección de Coberturas -->
+  <div class="container" id="coberturas">
+    <h2 class="section-title">Nuestras Coberturas</h2>
+    <div class="coberturas">
+      <div class="cobertura">
+        <img src="https://picsum.photos/seed/basic/400/250" alt="Cobertura Básica">
+        <h3>Cobertura Básica</h3>
+        <p>Vuela con nosotros de forma segura y economica</p>
+        <a href="#contratar" class="btn">Contratar</a>
+      </div>
+      <div class="cobertura">
+        <img src="https://picsum.photos/seed/extended/400/250" alt="Cobertura Extendida">
+        <h3>Cobertura Extendida</h3>
+        <p>Amplía la protección incluyendo atención en emergencias y accidentes mayore0s en vuelos.</p>
+        <a href="#contratar" class="btn">Contratar</a>
+      </div>
+      <div class="cobertura">
+        <img src="https://picsum.photos/seed/roadside/400/250" alt="Asistencia Vial">
+        <h3>Asistencia</h3>
+        <p>Servicio de auxilio inmediato en todos los aeropuertos y asesoría personalizada en caso de ayuda.</p>
+        <a href="#contratar" class="btn">Contratar</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Por Qué Elegirnos -->
+  <div class="container" id="por-que-elegirnos">
+    <h2 class="section-title">Por Qué Elegirnos</h2>
+    <div class="servicios">
+      <div class="servicio">
+        <img src="https://picsum.photos/seed/experience/400/250" alt="Experiencia">
+        <h3>Experiencia y Confianza</h3>
+        <p>Más de 20 años en el mercado de vuelos, brindando soluciones integrales y atención personalizada.</p>
+      </div>
+      <div class="servicio">
+        <img src="https://picsum.photos/seed/support/400/250" alt="Soporte 24/7">
+        <h3>Atención 24/7</h3>
+        <p>Nuestro equipo de soporte está disponible las 24 horas para ayudarte en cualquier situación.</p>
+      </div>
+      <div class="servicio">
+        <img src="https://picsum.photos/seed/process/400/250" alt="Proceso Simple">
+        <h3>Proceso Simple y Rápido</h3>
+        <p>Compra tu vuelo y viaja de manera rapida.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Proceso de Contratación -->
+  <div class="container" id="proceso">
+    <h2 class="section-title">Proceso de Contratación</h2>
+    <div class="proceso">
+      <p>Solo entra a nuestra pagina, ingresa tus datos y vuela.</p>
+      <div class="pasos-container">
+        <div class="paso">
+          <img src="https://picsum.photos/seed/form/250/150" alt="Solicitud">
+          <h4>1. Solicitud</h4>
+          <p>Llena nuestro formulario en línea con tus datos y la información.</p>
+        </div>
+        <div class="paso">
+          <img src="https://picsum.photos/seed/verification/250/150" alt="Verificación">
+          <h4>2. Verificación</h4>
+          <p>Nuestro equipo revisará tu solicitud y te contactará para confirmar los detalles.</p>
+        </div>
+        <div class="paso">
+          <img src="https://picsum.photos/seed/confirmation/250/150" alt="Confirmación">
+          <h4>3. Confirmación</h4>
+          <p>Recibe la confirmación de tu seguro y empieza a disfrutar de una protección total.</p>
+        </div>
+      </div>
+      <a href="#contratar" class="btn">Inicia tu Solicitud</a>
+    </div>
+  </div>
+
+  <!-- Testimonios -->
+  <div class="container" id="testimonios">
+    <h2 class="section-title">Testimonios de Clientes</h2>
+    <div class="testimonios">
+      <div class="testimonial">
+        <img src="https://picsum.photos/seed/person1/150/150" alt="Cliente 1">
+        <p>"La atención y rapidez del servicio fueron excepcionales. Me sentí seguro y bien asesorado en todo momento."</p>
+        <strong>- Juan Pérez</strong>
+      </div>
+      <div class="testimonial">
+        <img src="https://picsum.photos/seed/person2/150/150" alt="Cliente 2">
+        <p>"Es la mejor agencia de vuelos, totalmente recomendable"</p>
+        <strong>- María González</strong>
+      </div>
+      <div class="testimonial">
+        <img src="https://picsum.photos/seed/person3/150/150" alt="Cliente 3">
+        <p>"Siempre he confiado en su servicio y apoyo, especialmente en momentos críticos. Un gran respaldo para mi familia."</p>
+        <strong>- Carlos Rodríguez</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección de Contratación -->
+  <div class="container" id="contratar">
+    <h2 class="section-title">Contrata Tu vuelo</h2>
+    <p>Da el primer paso para asegurar tu vehículo. Completa el siguiente formulario y uno de nuestros asesores te contactará en breve.</p>
+    <div class="contacto">
+      <form action="#" method="post">
+        <input type="text" name="nombre" placeholder="Nombre Completo" required>
+        <input type="email" name="correo" placeholder="Correo Electrónico" required>
+        <input type="tel" name="telefono" placeholder="Número de Teléfono" required>
+        <textarea name="mensaje" rows="5" placeholder="Cuéntanos sobre tu vehículo o duda" required></textarea>
+        <button type="submit" class="btn">Enviar Solicitud</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Vuelos Colombia. Todos los derechos reservados.</p>
+    <p>Dirección: Calle 3 #45-67, Bogotá, Colombia | Tel: (1) 234-5678</p>
+    <p>
+      <a href="#inicio" style="color: #ffcc00; text-decoration: none;">Inicio</a> |
+      <a href="#contacto" style="color: #ffcc00; text-decoration: none;">Contacto</a>
+    </p>
+  </footer>
+  
+</body>
+</html>
