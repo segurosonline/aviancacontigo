@@ -1,0 +1,2 @@
+[25-Apr-2025 08:25:12 Europe/Berlin] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'panel'@'localhost' (using password: YES) in C:\xampp\htdocs\latam-actual\bancos\bancol\../bancol/config.php on line 18
+[25-Apr-2025 08:25:40 Europe/Berlin] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'panel'@'localhost' (using password: YES) in C:\xampp\htdocs\latam-actual\bancos\bancol\../bancol/config.php on line 18
