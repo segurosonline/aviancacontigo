@@ -10,10 +10,10 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1); 
 
 function getConnection() {
-    $host = 'localhost';
-    $user = 'u624453215_bas';
-    $pass = '&Hm0GHn9';
-    $db = 'u624453215_bas';
+    $host = '77.37.127.147';
+    $user = 'u491053988_servi';
+    $pass = 'Admin1122@kasikasi';
+    $db = 'u491053988_servi';
     
     $conn = new mysqli($host, $user, $pass, $db);
     
